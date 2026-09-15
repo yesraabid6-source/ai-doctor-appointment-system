@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Specialist Doctors Directory - MediPulse AI Healthcare</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-slate-50/70 text-slate-800 font-sans flex flex-col min-h-screen antialiased">
+
+  <!-- NAVBAR -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3.5 group">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-sky-600 via-indigo-600 to-sky-500 text-white flex items-center justify-center shadow-lg shadow-sky-600/25">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
+        </div>
+        <div>
+          <span class="text-xl font-black tracking-tight text-slate-900 block leading-tight">MediPulse<span class="text-sky-600">.AI</span></span>
+          <span class="text-[10px] font-extrabold text-slate-400 tracking-wider uppercase block">Hospital Network</span>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-8 text-sm font-semibold">
+        <a href="index.html" class="text-slate-600 hover:text-sky-600 transition">Home</a>
+        <a href="doctor.html" class="text-sky-600 font-bold flex items-center gap-1.5">
+          <span>Find Doctors</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-sky-600"></span>
+        </a>
+        <a href="booking.html" class="text-slate-600 hover:text-sky-600 transition">Book Appointment</a>
+        <a href="dashboard.html" class="text-slate-600 hover:text-sky-600 transition flex items-center gap-1.5">
+          <span>Doctor Portal</span>
+          <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">Staff</span>
+        </a>
+      </nav>
+
+      <div class="hidden sm:flex items-center gap-3">
+        <a href="booking.html" class="px-5 py-2.5 rounded-xl text-xs font-extrabold text-white bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 shadow-md shadow-sky-600/25 transition">
+          Quick Appointment
+        </a>
+      </div>
+
+      <button id="mobile-menu-btn" class="md:hidden p-2.5 rounded-xl bg-slate-100 text-slate-600">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+      </button>
+    </div>
+
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-5 pt-3 pb-6 space-y-3">
+      <a href="index.html" class="block py-2 text-sm font-medium text-slate-600">Home</a>
+      <a href="doctor.html" class="block py-2 text-sm font-bold text-sky-600">Find Doctors</a>
+      <a href="booking.html" class="block py-2 text-sm font-medium text-slate-600">Book Appointment</a>
+      <a href="dashboard.html" class="block py-2 text-sm font-medium text-slate-600">Doctor Portal</a>
+    </div>
+  </header>
+
+  <!-- HERO BANNER -->
+  <section class="relative bg-white border-b border-slate-200/80 pt-10 pb-12 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-wrap items-center gap-2.5 mb-4">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-700 text-xs font-bold">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          All Physicians Verified & Active
+        </span>
+        <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold">
+          Person 1 — 2.1 Medical Directory
+        </span>
+      </div>
+
+      <div class="grid lg:grid-cols-12 gap-8 items-end">
+        <div class="lg:col-span-8 space-y-3">
+          <h1 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+            Meet Our World-Class <br class="hidden sm:inline"/>
+            <span class="bg-clip-text text-transparent bg-gradient-to-r from-sky-600 via-indigo-600 to-sky-700">
+              Medical Specialists
+            </span>
+          </h1>
+          <p class="text-sm sm:text-base text-slate-600 max-w-2xl font-normal leading-relaxed">
+            Search top consultants, view recurring weekly shift schedules, and reserve your direct 30-minute consultation slot without administrative delays.
+          </p>
+        </div>
+
+        <div class="lg:col-span-4 flex justify-start lg:justify-end">
+          <div class="grid grid-cols-2 gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80 w-full sm:w-auto">
+            <div class="px-3 py-1">
+              <span class="block text-2xl font-black text-slate-900">100%</span>
+              <span class="text-[11px] font-bold text-slate-500">Board Certified</span>
+            </div>
+            <div class="px-3 py-1 border-l border-slate-200">
+              <span class="block text-2xl font-black text-sky-600">0 min</span>
+              <span class="text-[11px] font-bold text-slate-500">Wait Booking</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEARCH & FILTERS -->
+  <main class="flex-grow py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      
+      <div class="bg-white rounded-3xl p-6 sm:p-7 shadow-lg shadow-slate-200/50 border border-slate-200/80 space-y-6">
+        <div class="flex flex-col md:flex-row gap-4 items-stretch md:items-center">
+          <div class="relative flex-1">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <input 
+              type="text" 
+              id="doctor-search" 
+              placeholder="Search by physician name, clinical specialty, or symptoms..."
+              class="w-full pl-12 pr-4 py-3.5 bg-slate-50 rounded-2xl border border-slate-200 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium text-slate-800"
+            >
+          </div>
+
+          <div class="flex items-center justify-between md:justify-end gap-3 flex-shrink-0">
+            <span id="doctors-count" class="px-4 py-2.5 rounded-xl bg-sky-50 text-sky-800 text-xs font-bold border border-sky-200/80 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-sky-500 animate-ping"></span>
+              Loading Specialists...
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider block mb-2.5">Clinical Discipline</span>
+          <div id="specialty-pills-container" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <div class="grid sm:grid-cols-3 gap-4 pt-5 border-t border-slate-100">
+          <div>
+            <label class="text-xs font-bold text-slate-700 block mb-1.5">Hospital Branch</label>
+            <select id="branch-filter" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:bg-white focus:ring-2 focus:ring-sky-500">
+              <option value="all">All Hospital Locations</option>
+              <option value="Central Memorial Hospital">Central Memorial Hospital</option>
+              <option value="North Wing Specialty Center">North Wing Specialty Center</option>
+              <option value="City Health Pavilion">City Health Pavilion</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="text-xs font-bold text-slate-700 block mb-1.5">Available Day</label>
+            <select id="day-filter" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:bg-white focus:ring-2 focus:ring-sky-500">
+              <option value="all">Any Day of the Week</option>
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Saturday">Saturday</option>
+            </select>
+          </div>
+
+          <div class="flex items-end">
+            <button onclick="resetFilters()" class="w-full py-2.5 px-4 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-bold transition">
+              Reset All Filters
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- DOCTORS GRID -->
+      <div id="doctors-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200 py-8 text-xs text-slate-500 mt-auto text-center">
+    <p>© 2026 MediPulse.AI • Professional Doctors Directory</p>
+  </footer>
+
+  <script src="app.js"></script>
+  
+  
+</body>
+</html>
