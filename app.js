@@ -1,3 +1,4 @@
+
 // =========================================================================
 // ClinIQ.AI - CLINICAL OPERATIONS & APPOINTMENT AUTOMATION ENGINE
 // =========================================================================
@@ -38,6 +39,7 @@ const DEFAULT_DOCTORS = [
     branch: "City Health Pavilion",
     rating: 4.9,
     consultationFee: 60,
+    // Working verified image:
     avatar: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=400",
     activeDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
     education: "MBBS, DCH - Pediatrics",
@@ -164,7 +166,7 @@ let N8N_WEBHOOK_URL = "https://automation.yourclinic.internal/webhook/appointmen
 
 
 // =========================================================================
-// DATA STORAGE HELPERS
+// DATA STORAGE HELPERS (Includes Auto-Migration for Broken Images)
 // =========================================================================
 
 function getSavedDoctors() {
@@ -173,7 +175,22 @@ function getSavedDoctors() {
     localStorage.setItem('app_doctors', JSON.stringify(DEFAULT_DOCTORS));
     return DEFAULT_DOCTORS;
   }
-  return JSON.parse(data);
+  
+  let doctors = JSON.parse(data);
+  // Auto-Repair: purani broken URL ko automatically replace karein
+  let needsUpdate = false;
+  doctors = doctors.map(doc => {
+    if (doc.id === 'DOC-003' && (!doc.avatar || doc.avatar.includes('photo-1594824813535'))) {
+      doc.avatar = "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=400";
+      needsUpdate = true;
+    }
+    return doc;
+  });
+
+  if (needsUpdate) {
+    localStorage.setItem('app_doctors', JSON.stringify(doctors));
+  }
+  return doctors;
 }
 
 function getSavedShifts() {
@@ -207,7 +224,7 @@ function saveShifts(shiftsList) {
 // SECTION 2: COMMON UTILITIES
 // =========================================================================
 
-// Alert Notification Toast
+// Alert Notification Popup
 function showToast(message, type = 'success') {
   let box = document.getElementById('toast-box');
   if (!box) {
@@ -232,7 +249,6 @@ function showToast(message, type = 'success') {
   setTimeout(() => alert.remove(), 3500);
 }
 
-// Date formatter: "2026-09-15" -> "Tue, Sep 15, 2026"
 function formatDate(dateString) {
   if (!dateString) return 'N/A';
   const d = new Date(dateString + 'T00:00:00');
@@ -256,7 +272,6 @@ function setupDoctorsPage() {
   renderSpecialtyPills();
   renderDoctorsList();
 
-  // Search input
   const searchInput = document.getElementById('doctor-search');
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
@@ -265,7 +280,6 @@ function setupDoctorsPage() {
     });
   }
 
-  // Branch filter
   const branchSelect = document.getElementById('branch-filter');
   if (branchSelect) {
     branchSelect.addEventListener('change', (e) => {
@@ -274,7 +288,6 @@ function setupDoctorsPage() {
     });
   }
 
-  // Day filter
   const daySelect = document.getElementById('day-filter');
   if (daySelect) {
     daySelect.addEventListener('change', (e) => {
@@ -284,7 +297,6 @@ function setupDoctorsPage() {
   }
 }
 
-// Render specialty filter pills with Teal Styling
 function renderSpecialtyPills() {
   const container = document.getElementById('specialty-pills-container');
   if (!container) return;
@@ -326,7 +338,6 @@ function resetAllFilters() {
   renderDoctorsList();
 }
 
-// Render Doctor Cards with Teal & Mint Palette
 function renderDoctorsList() {
   const grid = document.getElementById('doctors-grid');
   const countBadge = document.getElementById('doctors-count');
@@ -368,7 +379,7 @@ function renderDoctorsList() {
       <div class="bg-white rounded-3xl border border-emerald-900/10 p-6 shadow-sm hover:shadow-xl hover:shadow-teal-900/5 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
         <div>
           <div class="flex gap-4 items-start mb-3">
-            <img src="${doc.avatar}" alt="${doc.name}" class="w-16 h-16 rounded-2xl object-cover ring-2 ring-teal-500/20 flex-shrink-0">
+            <img src="${doc.avatar}" alt="${doc.name}" onerror="this.src='https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=400'" class="w-16 h-16 rounded-2xl object-cover ring-2 ring-teal-500/20 flex-shrink-0">
             <div class="min-w-0">
               <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-teal-50 text-teal-800 border border-teal-200/70">${doc.specialty}</span>
               <h3 class="font-bold text-slate-900 text-base mt-1 truncate">${doc.name}</h3>
@@ -395,7 +406,6 @@ function renderDoctorsList() {
   }).join('');
 }
 
-// Doctor Details Popup Modal with Teal Theme
 function viewDoctorDetails(doctorId) {
   const doctors = getSavedDoctors();
   const doc = doctors.find(d => d.id === doctorId);
@@ -411,7 +421,7 @@ function viewDoctorDetails(doctorId) {
       <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-teal-100">
         <div class="flex items-center justify-between pb-3 border-b border-slate-100">
           <div class="flex items-center gap-3">
-            <img src="${doc.avatar}" class="w-14 h-14 rounded-2xl object-cover ring-2 ring-teal-500/20">
+            <img src="${doc.avatar}" onerror="this.src='https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=400'" class="w-14 h-14 rounded-2xl object-cover ring-2 ring-teal-500/20">
             <div>
               <h3 class="font-bold text-slate-900 text-base">${doc.name}</h3>
               <p class="text-xs text-teal-600 font-semibold">${doc.specialty} • ${doc.education}</p>
@@ -458,7 +468,6 @@ function setupBookingPage() {
   const form = document.getElementById('appointment-form');
   if (!form) return;
 
-  // Populate doctor select
   const select = document.getElementById('doctor-select');
   const doctors = getSavedDoctors();
   if (select) {
@@ -473,7 +482,6 @@ function setupBookingPage() {
     });
   }
 
-  // Set date picker
   const dateInput = document.getElementById('appointment-date');
   if (dateInput) {
     const today = new Date().toISOString().split('T')[0];
@@ -489,14 +497,12 @@ function setupBookingPage() {
     });
   }
 
-  // Check URL param (?doctor=DOC-001)
   const urlParamDoctor = new URLSearchParams(window.location.search).get('doctor');
   if (urlParamDoctor && select) {
     select.value = urlParamDoctor;
     currentBookingDoctorId = urlParamDoctor;
   }
 
-  // Symptom reason field for real-time AI triage preview
   const reasonBox = document.getElementById('appointment-reason');
   if (reasonBox) {
     reasonBox.addEventListener('input', (e) => {
@@ -504,7 +510,6 @@ function setupBookingPage() {
     });
   }
 
-  // Mode radio buttons
   document.querySelectorAll('input[name="appointmentType"]').forEach(r => {
     r.addEventListener('change', refreshBookingSummary);
   });
@@ -515,7 +520,6 @@ function setupBookingPage() {
   refreshBookingSummary();
 }
 
-// Generate 30-min time slots based on doctor shift timings
 function calculateOpenSlots() {
   const container = document.getElementById('slots-container');
   const notice = document.getElementById('slots-notice');
@@ -533,7 +537,6 @@ function calculateOpenSlots() {
   const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const selectedDayName = dayNames[dateObj.getDay()];
 
-  // Filter shifts
   const shifts = getSavedShifts().filter(s => s.doctorId === currentBookingDoctorId && s.dayOfWeek.toLowerCase() === selectedDayName.toLowerCase());
 
   if (shifts.length === 0) {
@@ -547,7 +550,6 @@ function calculateOpenSlots() {
     return;
   }
 
-  // Generate slots
   let slots = [];
   shifts.forEach(s => {
     let [startHour, startMin] = s.startTime.split(':').map(Number);
@@ -566,7 +568,6 @@ function calculateOpenSlots() {
     }
   });
 
-  // Already booked check
   const appointments = getSavedAppointments();
   const alreadyBooked = appointments
     .filter(a => a.doctorId === currentBookingDoctorId && a.date === currentBookingDate && a.status !== 'Cancelled')
@@ -604,7 +605,6 @@ function chooseSlot(slot) {
   refreshBookingSummary();
 }
 
-// Symptom AI urgency analysis with Teal Theme Preview Box
 function analyzeSymptomsWithAi(text) {
   const box = document.getElementById('ai-classification-preview');
   if (!box) return;
@@ -640,7 +640,6 @@ function analyzeSymptomsWithAi(text) {
   `;
 }
 
-// Refresh Sticky Summary
 function refreshBookingSummary() {
   const doctors = getSavedDoctors();
   const doc = currentBookingDoctorId ? doctors.find(d => d.id === currentBookingDoctorId) : null;
@@ -653,7 +652,6 @@ function refreshBookingSummary() {
   if (document.getElementById('summary-type')) document.getElementById('summary-type').textContent = type;
 }
 
-// Form Submit -> Save & Show Success Modal
 function submitAppointmentForm(e) {
   e.preventDefault();
 
@@ -689,12 +687,10 @@ function submitAppointmentForm(e) {
     status: 'Pending'
   };
 
-  // 1. Save to appointments list
   const allAppointments = getSavedAppointments();
   allAppointments.unshift(newAppointment);
   saveAppointments(allAppointments);
 
-  // 2. n8n Payload
   const n8nPayload = {
     event: "appointment.created",
     timestamp: new Date().toISOString(),
@@ -705,7 +701,6 @@ function submitAppointmentForm(e) {
   };
   localStorage.setItem('last_n8n_payload', JSON.stringify(n8nPayload));
 
-  // 3. Success Modal Popup with Teal Styling
   const modalHtml = `
     <div id="booking-success-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
       <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 border border-teal-100">
@@ -753,7 +748,6 @@ function setupDashboardPage() {
   renderShiftManager();
   renderN8nMonitor();
 
-  // Search filter
   const searchInput = document.getElementById('dashboard-search');
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
@@ -762,7 +756,6 @@ function setupDashboardPage() {
     });
   }
 
-  // Doctor filter
   const docSelect = document.getElementById('dashboard-doctor-filter');
   if (docSelect) {
     docSelect.addEventListener('change', (e) => {
@@ -771,14 +764,12 @@ function setupDashboardPage() {
     });
   }
 
-  // Shifts doctor selector
   const shiftDocSelect = document.getElementById('shift-doctor-select');
   if (shiftDocSelect) {
     shiftDocSelect.addEventListener('change', renderShiftManager);
   }
 }
 
-// Refresh Metric Counters
 function refreshMetricsCards() {
   const appointments = getSavedAppointments();
   const today = new Date().toISOString().split('T')[0];
@@ -796,7 +787,6 @@ function refreshMetricsCards() {
   if (document.getElementById('metric-pending')) document.getElementById('metric-pending').textContent = pending;
 }
 
-// Populate Doctor Dropdowns
 function populateDoctorDropdowns() {
   const doctors = getSavedDoctors();
   const filterSelect = document.getElementById('dashboard-doctor-filter');
@@ -811,7 +801,6 @@ function populateDoctorDropdowns() {
   }
 }
 
-// Tab Switcher with Teal Styles
 function switchDashboardTab(tabName) {
   const tabs = ['appointments', 'availability', 'n8n'];
   tabs.forEach(t => {
@@ -843,7 +832,6 @@ function setStatusFilter(status) {
   renderDashboardTable();
 }
 
-// Render Dashboard Appointments Table
 function renderDashboardTable() {
   const tbody = document.getElementById('appointments-tbody');
   const countEl = document.getElementById('table-results-count');
@@ -923,7 +911,6 @@ function updateAppointmentStatus(id, newStatus) {
   }
 }
 
-// Availability Shift Manager
 function renderShiftManager() {
   const container = document.getElementById('shifts-list-container');
   const select = document.getElementById('shift-doctor-select');
@@ -983,7 +970,6 @@ function deleteShift(shiftId) {
   renderShiftManager();
 }
 
-// n8n Webhook Monitor
 function renderN8nMonitor() {
   const urlInput = document.getElementById('n8n-webhook-url');
   const payloadEl = document.getElementById('n8n-last-payload');
@@ -1023,26 +1009,49 @@ function testN8nWebhookPing() {
 
 
 // =========================================================================
-// GLOBAL INITIALIZER
+// GUARANTEED MOBILE MENU TOGGLE (Direct & Fail-Safe)
 // =========================================================================
 
-document.addEventListener('DOMContentLoaded', () => {
-  // 1. Mobile Menu Toggle
-  const mobileBtn = document.getElementById('mobile-menu-btn');
-  const mobileMenu = document.getElementById('mobile-menu');
-  if (mobileBtn && mobileMenu) {
-    mobileBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-    });
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobile-menu');
+  if (menu) {
+    menu.classList.toggle('hidden');
   }
+}
 
-  // 2. Auto detect & initialize active page:
+function setupMobileMenuBinding() {
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  if (btn && menu) {
+    btn.onclick = function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      menu.classList.toggle('hidden');
+    };
+  }
+}
+
+
+// =========================================================================
+// GLOBAL MASTER INITIALIZER
+// =========================================================================
+
+function initApp() {
+  setupMobileMenuBinding();
   setupDoctorsPage();   // doctor.html
   setupBookingPage();   // booking.html
   setupDashboardPage(); // dashboard.html
-});
+}
+
+// Ensure execution no matter when script loads
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
 
 // Global Window functions
+window.toggleMobileMenu = toggleMobileMenu;
 window.changeSpecialtyFilter = changeSpecialtyFilter;
 window.resetAllFilters = resetAllFilters;
 window.viewDoctorDetails = viewDoctorDetails;
@@ -1054,3 +1063,5 @@ window.handleAddNewShift = handleAddNewShift;
 window.deleteShift = deleteShift;
 window.saveN8nUrl = saveN8nUrl;
 window.testN8nWebhookPing = testN8nWebhookPing;
+```
+
