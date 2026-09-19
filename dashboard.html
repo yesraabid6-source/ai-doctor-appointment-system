@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,43 +10,65 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Tailwind CSS & Stylesheet -->
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- AOS (Animate On Scroll) CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/output.css">
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .glow-sphere {
+      position: absolute;
+      border-radius: 9999px;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+  </style>
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans flex flex-col min-h-screen antialiased selection:bg-sky-500 selection:text-white">
+<body class="bg-[#f6faf8] text-slate-900 font-sans flex flex-col min-h-screen antialiased selection:bg-teal-200 selection:text-teal-900 relative overflow-x-hidden">
+
+  <!-- Ambient Glow Elements -->
+  <div class="glow-sphere w-96 h-96 bg-teal-200/30 -top-20 -left-20 animate-pulse"></div>
+  <div class="glow-sphere w-96 h-96 bg-emerald-200/20 top-96 -right-20 animate-pulse" style="animation-duration: 7s;"></div>
 
   <!-- ========================================================= -->
   <!-- 1. DASHBOARD TOP NAVIGATION BAR                           -->
   <!-- ========================================================= -->
-  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200/80">
+  <header class="sticky top-0 z-40 bg-white/85 backdrop-blur-lg border-b border-emerald-900/10 transition-all duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       
       <!-- Brand & Badge -->
       <div class="flex items-center gap-3.5">
-        <a href="index.html" class="flex items-center gap-2.5">
-          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-600 to-indigo-600 text-white flex items-center justify-center font-black shadow-md shadow-sky-600/30">
+        <a href="index.html" class="flex items-center gap-2.5 group">
+          <div class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center font-black text-lg shadow-sm shadow-teal-600/30 group-hover:scale-105 transition-transform duration-200">
             +
           </div>
-          <span class="text-lg font-black tracking-tight text-slate-900 hidden sm:inline">MediPulse<span class="text-sky-600">.AI</span></span>
+          <span class="text-lg font-black tracking-tight text-slate-900 hidden sm:inline">ClinIQ<span class="text-teal-600">.AI</span></span>
         </a>
         <span class="h-5 w-px bg-slate-200 hidden sm:inline"></span>
-        <span class="px-2.5 py-1 rounded-xl text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-100">
+        <span class="px-3 py-1 rounded-full text-xs font-bold bg-teal-50 text-teal-800 border border-teal-200/60 flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-teal-600"></span>
           Doctor & Admin Portal
         </span>
       </div>
 
       <!-- Quick Nav Links -->
-      <nav class="hidden md:flex items-center gap-6 text-sm font-semibold">
-        <a href="index.html" class="text-slate-500 hover:text-sky-600 transition">Patient Portal</a>
-        <a href="doctor.html" class="text-slate-500 hover:text-sky-600 transition">Doctors</a>
-        <a href="booking.html" class="text-slate-500 hover:text-sky-600 transition">Booking Form</a>
+      <nav class="hidden md:flex items-center gap-6 text-sm font-semibold text-slate-600">
+        <a href="index.html" class="hover:text-teal-600 transition">Patient Portal</a>
+        <a href="doctor.html" class="hover:text-teal-600 transition">Doctors</a>
+        <a href="booking.html" class="hover:text-teal-600 transition">Booking Form</a>
       </nav>
 
       <!-- Fast Action Button -->
       <div class="flex items-center gap-3">
-        <a href="booking.html" class="px-4 py-2.5 rounded-xl text-xs font-black text-white bg-sky-600 hover:bg-sky-700 shadow-md shadow-sky-600/20 transition flex items-center gap-1.5">
+        <a href="booking.html" class="px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-teal-600 hover:bg-teal-700 shadow-sm shadow-teal-600/25 hover:shadow-teal-600/40 hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-1.5">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
           <span>New Appointment</span>
         </a>
@@ -57,29 +79,32 @@
   <!-- ========================================================= -->
   <!-- 2. MAIN DASHBOARD CONTENT AREA                            -->
   <!-- ========================================================= -->
-  <main class="flex-grow py-8">
+  <main class="flex-grow py-8 relative z-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
       
       <!-- Top Title & Navigation Tabs -->
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4" data-aos="fade-down" data-aos-duration="600">
         <div>
-          <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">Person 1 — 2.3 & 2.4 Staff Engine</span>
-          <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Clinical Operations Portal</h1>
+          <span class="text-xs font-bold text-teal-700 uppercase tracking-wider flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            Staff & Clinical Operations
+          </span>
+          <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-0.5">Operations Portal</h1>
         </div>
 
         <!-- 3 Top Tabs -->
-        <div class="inline-flex p-1 bg-white rounded-2xl border border-slate-200/80 shadow-xs self-start md:self-auto">
+        <div class="inline-flex p-1.5 bg-white rounded-2xl border border-teal-100 shadow-sm self-start md:self-auto gap-1">
           <button id="tab-btn-appointments" onclick="switchDashboardTab('appointments')"
-                  class="px-4 py-2 rounded-xl text-xs font-bold transition bg-sky-600 text-white shadow-md shadow-sky-600/20">
+                  class="px-4 py-2 rounded-xl text-xs font-bold transition bg-teal-600 text-white shadow-sm shadow-teal-600/25">
             Appointments & Flow
           </button>
           <button id="tab-btn-availability" onclick="switchDashboardTab('availability')"
-                  class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 transition">
-            Doctor Availability Shifts
+                  class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-teal-700 hover:bg-teal-50/60 transition">
+            Doctor Shifts
           </button>
           <button id="tab-btn-n8n" onclick="switchDashboardTab('n8n')"
-                  class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 transition">
-            n8n Webhook Sync
+                  class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-teal-700 hover:bg-teal-50/60 transition">
+            Webhook Sync
           </button>
         </div>
       </div>
@@ -89,57 +114,57 @@
       <!-- ===================================================== -->
       <div id="tab-section-appointments" class="space-y-8">
         
-        <!-- 5 Metrics Summary Cards (Spec 2.3) -->
-        <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+        <!-- 5 Metrics Summary Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-5 gap-4" data-aos="fade-up" data-aos-duration="700">
           
           <!-- Total -->
-          <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs">
-            <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider block mb-1">Total Appointments</span>
+          <div class="bg-white p-5 rounded-3xl border border-emerald-900/10 shadow-xl shadow-teal-900/5 hover:-translate-y-1 transition-transform duration-200">
+            <span class="text-slate-400 text-[10px] font-extrabold uppercase tracking-wider block mb-1">Total Appointments</span>
             <div id="metric-total" class="text-2xl font-black text-slate-900">0</div>
             <span class="text-[11px] text-slate-400 mt-1 block">Lifetime records</span>
           </div>
 
           <!-- Today's -->
-          <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs">
-            <span class="text-sky-600 text-[10px] font-bold uppercase tracking-wider block mb-1">Today's Schedule</span>
-            <div id="metric-today" class="text-2xl font-black text-sky-600">0</div>
-            <span class="text-[11px] text-slate-400 mt-1 block">Active on today's calendar</span>
+          <div class="bg-white p-5 rounded-3xl border border-emerald-900/10 shadow-xl shadow-teal-900/5 hover:-translate-y-1 transition-transform duration-200">
+            <span class="text-teal-600 text-[10px] font-extrabold uppercase tracking-wider block mb-1">Today's Schedule</span>
+            <div id="metric-today" class="text-2xl font-black text-teal-600">0</div>
+            <span class="text-[11px] text-slate-400 mt-1 block">Active on calendar</span>
           </div>
 
           <!-- Upcoming -->
-          <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs">
-            <span class="text-indigo-600 text-[10px] font-bold uppercase tracking-wider block mb-1">Upcoming</span>
-            <div id="metric-upcoming" class="text-2xl font-black text-indigo-600">0</div>
+          <div class="bg-white p-5 rounded-3xl border border-emerald-900/10 shadow-xl shadow-teal-900/5 hover:-translate-y-1 transition-transform duration-200">
+            <span class="text-emerald-700 text-[10px] font-extrabold uppercase tracking-wider block mb-1">Upcoming</span>
+            <div id="metric-upcoming" class="text-2xl font-black text-emerald-700">0</div>
             <span class="text-[11px] text-slate-400 mt-1 block">Scheduled future shifts</span>
           </div>
 
           <!-- Cancelled -->
-          <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs">
-            <span class="text-rose-600 text-[10px] font-bold uppercase tracking-wider block mb-1">Cancelled</span>
+          <div class="bg-white p-5 rounded-3xl border border-emerald-900/10 shadow-xl shadow-teal-900/5 hover:-translate-y-1 transition-transform duration-200">
+            <span class="text-rose-600 text-[10px] font-extrabold uppercase tracking-wider block mb-1">Cancelled</span>
             <div id="metric-cancelled" class="text-2xl font-black text-rose-600">0</div>
             <span class="text-[11px] text-slate-400 mt-1 block">Released back to queue</span>
           </div>
 
           <!-- Pending -->
-          <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs col-span-2 lg:col-span-1">
-            <span class="text-amber-600 text-[10px] font-bold uppercase tracking-wider block mb-1">Pending Confirmation</span>
+          <div class="bg-white p-5 rounded-3xl border border-emerald-900/10 shadow-xl shadow-teal-900/5 col-span-2 lg:col-span-1 hover:-translate-y-1 transition-transform duration-200">
+            <span class="text-amber-600 text-[10px] font-extrabold uppercase tracking-wider block mb-1">Pending Sync</span>
             <div id="metric-pending" class="text-2xl font-black text-amber-600">0</div>
-            <span class="text-[11px] text-slate-400 mt-1 block">Awaiting n8n auto-confirm</span>
+            <span class="text-[11px] text-slate-400 mt-1 block">Awaiting confirmation</span>
           </div>
 
         </div>
 
         <!-- Interactive Appointments Table -->
-        <div class="bg-white rounded-3xl shadow-xs border border-slate-200/80 overflow-hidden">
+        <div data-aos="fade-up" data-aos-duration="700" data-aos-delay="100" class="bg-white rounded-3xl shadow-xl shadow-teal-900/5 border border-emerald-900/10 overflow-hidden">
           
           <!-- Table Header / Search Bar -->
           <div class="p-6 border-b border-slate-100 space-y-4">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h3 class="text-base font-black text-slate-900">Patient Appointments Queue</h3>
-                <p class="text-xs text-slate-400">View real-time AI triage classifications and manage status transitions</p>
+                <p class="text-xs text-slate-500">Real-time triage classifications and status transitions</p>
               </div>
-              <span id="table-results-count" class="text-xs font-bold px-3 py-1 rounded-full bg-slate-100 text-slate-600 self-start sm:self-auto">
+              <span id="table-results-count" class="text-xs font-bold px-3 py-1 rounded-full bg-teal-50 text-teal-800 border border-teal-100 self-start sm:self-auto">
                 0 entries
               </span>
             </div>
@@ -147,11 +172,11 @@
             <div class="grid sm:grid-cols-12 gap-3 items-center">
               <div class="sm:col-span-6 relative">
                 <input type="text" id="dashboard-search" placeholder="Search patient name, booking ID, or doctor..."
-                       class="w-full pl-4 pr-3 py-2 text-xs bg-slate-50 rounded-xl border border-slate-200 focus:bg-white focus:ring-2 focus:ring-sky-500 font-medium">
+                       class="w-full pl-4 pr-3 py-2.5 text-xs bg-[#f6faf8] rounded-xl border border-teal-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 font-medium text-slate-800 transition">
               </div>
               <div class="sm:col-span-6">
                 <select id="dashboard-doctor-filter" 
-                        class="w-full px-3 py-2 text-xs bg-slate-50 rounded-xl border border-slate-200 focus:bg-white focus:ring-2 focus:ring-sky-500 font-semibold text-slate-700">
+                        class="w-full px-3.5 py-2.5 text-xs bg-[#f6faf8] rounded-xl border border-teal-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 font-semibold text-slate-700 transition">
                   <option value="all">All Doctors</option>
                 </select>
               </div>
@@ -159,12 +184,12 @@
 
             <!-- Status Filter Tabs -->
             <div class="flex flex-wrap gap-1.5 pt-1">
-              <button onclick="setStatusFilter('all')" data-status="all" class="status-filter-btn px-3 py-1 rounded-lg text-xs font-bold bg-slate-900 text-white transition">All</button>
-              <button onclick="setStatusFilter('Pending')" data-status="Pending" class="status-filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Pending</button>
-              <button onclick="setStatusFilter('Processing')" data-status="Processing" class="status-filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Processing</button>
-              <button onclick="setStatusFilter('Confirmed')" data-status="Confirmed" class="status-filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Confirmed</button>
-              <button onclick="setStatusFilter('Cancelled')" data-status="Cancelled" class="status-filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Cancelled</button>
-              <button onclick="setStatusFilter('Completed')" data-status="Completed" class="status-filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Completed</button>
+              <button onclick="setStatusFilter('all')" data-status="all" class="status-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white transition">All</button>
+              <button onclick="setStatusFilter('Pending')" data-status="Pending" class="status-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-white border border-teal-100 text-slate-600 hover:bg-teal-50 transition">Pending</button>
+              <button onclick="setStatusFilter('Processing')" data-status="Processing" class="status-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-white border border-teal-100 text-slate-600 hover:bg-teal-50 transition">Processing</button>
+              <button onclick="setStatusFilter('Confirmed')" data-status="Confirmed" class="status-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-white border border-teal-100 text-slate-600 hover:bg-teal-50 transition">Confirmed</button>
+              <button onclick="setStatusFilter('Cancelled')" data-status="Cancelled" class="status-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-white border border-teal-100 text-slate-600 hover:bg-teal-50 transition">Cancelled</button>
+              <button onclick="setStatusFilter('Completed')" data-status="Completed" class="status-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-white border border-teal-100 text-slate-600 hover:bg-teal-50 transition">Completed</button>
             </div>
           </div>
 
@@ -172,16 +197,16 @@
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
               <thead>
-                <tr class="bg-slate-50 text-[11px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100">
-                  <th class="px-6 py-3.5">Patient Details</th>
-                  <th class="px-6 py-3.5">Attending Doctor</th>
-                  <th class="px-6 py-3.5">Date & Slot</th>
-                  <th class="px-6 py-3.5">AI Category (Triage)</th>
-                  <th class="px-6 py-3.5">Status Badge</th>
-                  <th class="px-6 py-3.5 text-right">Actions</th>
+                <tr class="bg-[#f6faf8] text-[11px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-100">
+                  <th class="px-6 py-4">Patient Details</th>
+                  <th class="px-6 py-4">Attending Doctor</th>
+                  <th class="px-6 py-4">Date & Slot</th>
+                  <th class="px-6 py-4">AI Category (Triage)</th>
+                  <th class="px-6 py-4">Status</th>
+                  <th class="px-6 py-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody id="appointments-tbody" class="divide-y divide-slate-100">
+              <tbody id="appointments-tbody" class="divide-y divide-slate-100 text-xs">
                 <!-- Injected via js/app.js -->
               </tbody>
             </table>
@@ -192,23 +217,23 @@
       </div>
 
       <!-- ===================================================== -->
-      <!-- TAB 2: DOCTOR AVAILABILITY RECURRING SHIFTS (2.4)     -->
+      <!-- TAB 2: DOCTOR AVAILABILITY RECURRING SHIFTS          -->
       <!-- ===================================================== -->
       <div id="tab-section-availability" class="hidden space-y-8">
         
-        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xs border border-slate-200/80">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl shadow-teal-900/5 border border-emerald-900/10">
           
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
             <div>
               <h3 class="text-lg font-black text-slate-900">Doctor Recurring Shift Schedule</h3>
-              <p class="text-xs text-slate-500 mt-0.5">Configure weekly recurring shift timings. Open slots are computed automatically for patients.</p>
+              <p class="text-xs text-slate-500 mt-0.5">Configure weekly shift timings. Slots are computed automatically for patients.</p>
             </div>
 
             <!-- Doctor Selector -->
             <div class="flex items-center gap-2">
-              <label class="text-xs font-bold text-slate-600 whitespace-nowrap">Doctor:</label>
-              <select id="shift-doctor-select" class="px-3 py-2 text-xs bg-slate-50 rounded-xl border border-slate-200 font-bold focus:ring-2 focus:ring-sky-500">
-                <!-- Injected by js/app.js -->
+              <label class="text-xs font-bold text-slate-700 whitespace-nowrap">Doctor:</label>
+              <select id="shift-doctor-select" class="px-3 py-2 text-xs bg-[#f6faf8] rounded-xl border border-teal-100 font-bold focus:ring-2 focus:ring-teal-500 text-slate-800 transition">
+                <!-- Injected by app.js -->
               </select>
             </div>
           </div>
@@ -218,23 +243,23 @@
             <!-- Left: Current Shifts for Doctor -->
             <div class="lg:col-span-7 space-y-4">
               <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">
-                Active Shifts for <span id="shift-doc-name" class="text-slate-800 font-black"></span> (<span id="shift-doc-spec" class="text-sky-600"></span>)
+                Active Shifts for <span id="shift-doc-name" class="text-slate-900 font-black"></span> (<span id="shift-doc-spec" class="text-teal-600"></span>)
               </span>
               
               <div id="shifts-list-container" class="space-y-2.5">
-                <!-- Injected via js/app.js -->
+                <!-- Injected via app.js -->
               </div>
             </div>
 
             <!-- Right: Add Shift Form -->
-            <div class="lg:col-span-5 bg-slate-50 rounded-2xl p-6 border border-slate-200">
-              <h4 class="text-sm font-black text-slate-800 mb-1">Add New Shift Rule</h4>
-              <p class="text-xs text-slate-500 mb-4">Shifts automatically split into 30-min bookable patient slots.</p>
+            <div class="lg:col-span-5 bg-[#f6faf8] rounded-3xl p-6 border border-teal-100">
+              <h4 class="text-sm font-black text-slate-900 mb-1">Add New Shift Rule</h4>
+              <p class="text-xs text-slate-500 mb-4">Shifts automatically generate 30-min patient appointment slots.</p>
 
               <form onsubmit="handleAddNewShift(event)" class="space-y-3.5">
                 <div>
                   <label class="text-xs font-bold text-slate-700 block mb-1">Day of Week</label>
-                  <select id="new-shift-day" class="w-full px-3 py-2 text-xs bg-white rounded-xl border border-slate-200 font-medium">
+                  <select id="new-shift-day" class="w-full px-3 py-2 text-xs bg-white rounded-xl border border-teal-100 font-medium focus:ring-2 focus:ring-teal-500">
                     <option value="Monday">Monday</option>
                     <option value="Tuesday">Tuesday</option>
                     <option value="Wednesday">Wednesday</option>
@@ -247,21 +272,21 @@
                 <div class="grid grid-cols-2 gap-3">
                   <div>
                     <label class="text-xs font-bold text-slate-700 block mb-1">Start Time</label>
-                    <input type="time" id="new-shift-start" value="09:00" required class="w-full px-3 py-2 text-xs bg-white rounded-xl border border-slate-200">
+                    <input type="time" id="new-shift-start" value="09:00" required class="w-full px-3 py-2 text-xs bg-white rounded-xl border border-teal-100 focus:ring-2 focus:ring-teal-500">
                   </div>
                   <div>
                     <label class="text-xs font-bold text-slate-700 block mb-1">End Time</label>
-                    <input type="time" id="new-shift-end" value="13:00" required class="w-full px-3 py-2 text-xs bg-white rounded-xl border border-slate-200">
+                    <input type="time" id="new-shift-end" value="13:00" required class="w-full px-3 py-2 text-xs bg-white rounded-xl border border-teal-100 focus:ring-2 focus:ring-teal-500">
                   </div>
                 </div>
 
                 <div>
                   <label class="text-xs font-bold text-slate-700 block mb-1">Slot Interval (Minutes)</label>
-                  <input type="number" id="new-shift-duration" value="30" min="15" max="120" step="15" class="w-full px-3 py-2 text-xs bg-white rounded-xl border border-slate-200">
+                  <input type="number" id="new-shift-duration" value="30" min="15" max="120" step="15" class="w-full px-3 py-2 text-xs bg-white rounded-xl border border-teal-100 focus:ring-2 focus:ring-teal-500">
                 </div>
 
-                <button type="submit" class="w-full py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs rounded-xl shadow-md transition">
-                  Save Shift
+                <button type="submit" class="w-full py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs rounded-xl shadow-sm shadow-teal-600/25 transition">
+                  Save Shift Rule
                 </button>
               </form>
             </div>
@@ -277,23 +302,23 @@
       <!-- ===================================================== -->
       <div id="tab-section-n8n" class="hidden space-y-8">
         
-        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xs border border-slate-200/80 space-y-6">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl shadow-teal-900/5 border border-emerald-900/10 space-y-6">
           <div>
-            <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">Person 2 Automation Integration</span>
-            <h3 class="text-xl font-black text-slate-900 mt-0.5">n8n Webhook & REST API Monitor</h3>
-            <p class="text-xs text-slate-500">Live inspection of payload dispatched when appointments are created or rescheduled.</p>
+            <span class="text-xs font-bold text-teal-700 uppercase tracking-wider">Automated Webhooks & Calendar Sync</span>
+            <h3 class="text-xl font-black text-slate-900 mt-0.5">n8n Integration Monitor</h3>
+            <p class="text-xs text-slate-500">Real-time inspection of payloads dispatched when appointments are scheduled.</p>
           </div>
 
           <!-- Webhook Input -->
-          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+          <div class="p-4 bg-[#f6faf8] rounded-2xl border border-teal-100 space-y-3">
             <div class="flex items-center justify-between">
-              <label class="text-xs font-bold text-slate-700">Target n8n Webhook URL</label>
-              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold" id="n8n-last-status">Ready</span>
+              <label class="text-xs font-bold text-slate-700">Target n8n Webhook Endpoint</label>
+              <span class="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold border border-emerald-200" id="n8n-last-status">Ready</span>
             </div>
             <div class="flex gap-2">
-              <input type="text" id="n8n-webhook-url" class="flex-1 px-3.5 py-2 text-xs font-mono bg-white rounded-xl border border-slate-200 font-medium">
-              <button onclick="saveN8nUrl()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-xl transition">Save</button>
-              <button onclick="testN8nWebhookPing()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition">Test Ping</button>
+              <input type="text" id="n8n-webhook-url" class="flex-1 px-3.5 py-2 text-xs font-mono bg-white rounded-xl border border-teal-100 focus:ring-2 focus:ring-teal-500 font-medium">
+              <button onclick="saveN8nUrl()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition">Save</button>
+              <button onclick="testN8nWebhookPing()" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-xl transition">Test Ping</button>
             </div>
           </div>
 
@@ -301,9 +326,9 @@
           <div>
             <div class="flex items-center justify-between mb-2">
               <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Latest Payload Dispatched to n8n</h4>
-              <button onclick="renderN8nSettings()" class="text-xs text-sky-600 font-bold hover:underline">Refresh</button>
+              <button onclick="renderN8nSettings()" class="text-xs text-teal-600 font-bold hover:underline">Refresh Payload</button>
             </div>
-            <pre id="n8n-last-payload" class="p-4 bg-slate-900 text-emerald-400 font-mono text-xs rounded-2xl overflow-x-auto max-h-72 border border-slate-800"></pre>
+            <pre id="n8n-last-payload" class="p-4 bg-slate-900 text-emerald-400 font-mono text-xs rounded-2xl overflow-x-auto max-h-72 border border-slate-800 shadow-inner"></pre>
           </div>
         </div>
 
@@ -315,9 +340,27 @@
   <!-- ========================================================= -->
   <!-- 3. FOOTER                                                 -->
   <!-- ========================================================= -->
-  <footer class="bg-white border-t border-slate-200 py-6 text-xs text-slate-500 mt-auto text-center">
-    <p>© 2026 MediPulse.AI • Clinical Operations Dashboard</p>
+  <footer class="bg-white border-t border-emerald-900/10 py-6 text-xs text-slate-500 mt-auto text-center font-medium relative z-10">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <p>© 2026 ClinIQ.AI • Clinical Operations Dashboard</p>
+      <div class="flex gap-4 text-slate-400">
+        <a href="index.html" class="hover:text-teal-600 transition">Patient Portal</a>
+        <a href="doctor.html" class="hover:text-teal-600 transition">Doctors</a>
+        <a href="booking.html" class="hover:text-teal-600 transition">Bookings</a>
+      </div>
+    </div>
   </footer>
+
+  <!-- AOS Animations Script -->
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      once: true,
+      duration: 750,
+      easing: 'ease-out-cubic',
+      offset: 50
+    });
+  </script>
 
   <!-- Single Master JavaScript Engine -->
   <script src="app.js"></script>

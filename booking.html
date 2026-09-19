@@ -1,91 +1,113 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Book Doctor Appointment - MediPulse AI Healthcare</title>
+  <title>Book Doctor Appointment - MediPulse AI</title>
   
   <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Tailwind CSS & Stylesheet -->
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- AOS (Animate On Scroll) CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/output.css">
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .glow-sphere {
+      position: absolute;
+      border-radius: 9999px;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+  </style>
 </head>
-<body class="bg-slate-50/70 text-slate-800 font-sans flex flex-col min-h-screen antialiased selection:bg-sky-500 selection:text-white">
+<body class="bg-[#f6faf8] text-slate-900 font-sans flex flex-col min-h-screen antialiased selection:bg-teal-200 selection:text-teal-900 relative overflow-x-hidden">
+
+  <!-- Ambient Background Glow Elements -->
+  <div class="glow-sphere w-96 h-96 bg-teal-200/35 -top-20 -left-20 animate-pulse"></div>
+  <div class="glow-sphere w-96 h-96 bg-emerald-200/25 top-96 -right-20 animate-pulse" style="animation-duration: 7s;"></div>
 
   <!-- ========================================================= -->
   <!-- 1. NAVIGATION BAR                                         -->
   <!-- ========================================================= -->
-  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200/80">
+  <header class="sticky top-0 z-40 bg-white/85 backdrop-blur-lg border-b border-emerald-900/10 transition-all duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       
       <!-- Brand Logo -->
-      <a href="index.html" class="flex items-center gap-3.5 group">
-        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-sky-600 via-indigo-600 to-sky-500 text-white flex items-center justify-center shadow-lg shadow-sky-600/25">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
+      <a href="index.html" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center font-black text-lg shadow-sm shadow-teal-600/30 group-hover:scale-105 transition-transform duration-200">
+          +
         </div>
         <div>
-          <span class="text-xl font-black tracking-tight text-slate-900 block leading-tight">MediPulse<span class="text-sky-600">.AI</span></span>
+          <span class="text-xl font-black tracking-tight text-slate-900 block leading-tight">ClinIQ<span class="text-teal-600">.AI</span></span>
           <span class="text-[10px] font-extrabold text-slate-400 tracking-wider uppercase block">Hospital Network</span>
         </div>
       </a>
 
       <!-- Desktop Nav -->
-      <nav class="hidden md:flex items-center gap-8 text-sm font-semibold">
-        <a href="index.html" class="text-slate-600 hover:text-sky-600 transition">Home</a>
-        <a href="doctor.html" class="text-slate-600 hover:text-sky-600 transition">Find Doctors</a>
-        <a href="booking.html" class="text-sky-600 font-bold flex items-center gap-1.5">
+      <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-700">
+        <a href="index.html" class="hover:text-teal-600 transition">Home</a>
+        <a href="doctor.html" class="hover:text-teal-600 transition">Find Doctors</a>
+        <a href="booking.html" class="text-teal-600 font-bold flex items-center gap-1.5 relative after:content-[''] after:absolute after:-bottom-1.5 after:left-0 after:w-full after:h-0.5 after:bg-teal-600">
           <span>Book Appointment</span>
-          <span class="w-1.5 h-1.5 rounded-full bg-sky-600"></span>
         </a>
-        <a href="dashboard.html" class="text-slate-600 hover:text-sky-600 transition flex items-center gap-1.5">
-          <span>Doctor Portal</span>
-          <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">Staff</span>
+        <a href="dashboard.html" class="hover:text-teal-600 transition text-xs px-3 py-1 rounded-full bg-teal-50 text-teal-800 font-bold border border-teal-200/60 hover:bg-teal-100/70">
+          Staff Portal
         </a>
       </nav>
 
       <!-- Action Button -->
       <div class="hidden sm:flex items-center gap-3">
-        <a href="doctor.html" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition">
-          View All Doctors
+        <a href="doctor.html" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white border border-teal-100 hover:bg-teal-50 transition shadow-sm">
+          Browse All Doctors
         </a>
       </div>
 
       <!-- Mobile Button -->
-      <button id="mobile-menu-btn" class="md:hidden p-2.5 rounded-xl bg-slate-100 text-slate-600">
+      <button id="mobile-menu-btn" class="md:hidden p-2.5 rounded-xl bg-white border border-teal-100 text-slate-700 hover:bg-teal-50 transition">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
       </button>
     </div>
 
     <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-5 pt-3 pb-6 space-y-3">
-      <a href="index.html" class="block py-2 text-sm font-medium text-slate-600">Home</a>
-      <a href="doctor.html" class="block py-2 text-sm font-medium text-slate-600">Find Doctors</a>
-      <a href="booking.html" class="block py-2 text-sm font-bold text-sky-600">Book Appointment</a>
-      <a href="dashboard.html" class="block py-2 text-sm font-medium text-slate-600">Doctor Portal</a>
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-teal-100 px-5 pt-3 pb-5 space-y-2 text-sm font-medium">
+      <a href="index.html" class="block py-2 text-slate-700 hover:text-teal-600">Home</a>
+      <a href="doctor.html" class="block py-2 text-slate-700 hover:text-teal-600">Find Doctors</a>
+      <a href="booking.html" class="block py-2 text-teal-600 font-bold">Book Appointment</a>
+      <a href="dashboard.html" class="block py-2 text-slate-700 hover:text-teal-600">Doctor Portal</a>
     </div>
   </header>
 
   <!-- ========================================================= -->
   <!-- 2. MAIN BOOKING SECTION                                   -->
   <!-- ========================================================= -->
-  <main class="flex-grow py-10">
+  <main class="flex-grow py-10 relative z-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <!-- Top Title Area -->
-      <div class="mb-8">
+      <div class="mb-8" data-aos="fade-down" data-aos-duration="700">
         <div class="flex items-center gap-2 mb-2">
-          <span class="px-3 py-1 rounded-full bg-sky-100 text-sky-700 text-xs font-bold">
-            Person 1 — 2.2 Appointment Booking Form
+          <span class="px-3.5 py-1 rounded-full bg-teal-50 text-teal-800 text-xs font-bold border border-teal-200">
+            Online Appointment Booking
           </span>
-          <span class="text-xs text-slate-400 font-medium">• Live Shift Engine</span>
+          <span class="text-xs text-slate-500 font-medium flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            Live Shift Availability
+          </span>
         </div>
         <h1 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">Schedule Your Consultation</h1>
-        <p class="text-sm text-slate-500 mt-1">Select your physician, pick an open shift slot, and receive automated calendar synchronization.</p>
+        <p class="text-sm text-slate-600 mt-1">Select your physician, pick an open shift slot, and receive automated calendar synchronization.</p>
       </div>
 
       <!-- Form & Summary Grid -->
@@ -95,12 +117,12 @@
         <div class="lg:col-span-8 space-y-8">
           
           <!-- STEP 1: Patient Information Card -->
-          <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200/80 space-y-6">
+          <div data-aos="fade-up" data-aos-duration="700" class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl shadow-teal-900/5 border border-emerald-900/10 space-y-6">
             <div class="flex items-center gap-3 pb-4 border-b border-slate-100">
-              <div class="w-8 h-8 rounded-xl bg-sky-100 text-sky-600 font-black text-sm flex items-center justify-center">1</div>
+              <div class="w-9 h-9 rounded-xl bg-teal-50 text-teal-700 font-black text-sm flex items-center justify-center ring-4 ring-teal-50/50">1</div>
               <div>
-                <h3 class="text-base font-bold text-slate-800">Patient Details</h3>
-                <p class="text-xs text-slate-400">Required contact and identity information</p>
+                <h3 class="text-base font-bold text-slate-900">Patient Details</h3>
+                <p class="text-xs text-slate-500">Required contact and identity information</p>
               </div>
             </div>
 
@@ -109,34 +131,34 @@
               <div class="sm:col-span-2">
                 <label class="text-xs font-bold text-slate-700 block mb-1.5">Full Name <span class="text-rose-500">*</span></label>
                 <input type="text" id="patient-name" required placeholder="e.g. Fatima Zahra"
-                       class="w-full px-4 py-3 bg-slate-50 rounded-2xl border border-slate-200 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 transition font-medium">
+                       class="w-full px-4 py-3 bg-[#f6faf8] rounded-2xl border border-teal-100 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 transition font-medium">
               </div>
 
               <!-- Email (Required) -->
               <div>
                 <label class="text-xs font-bold text-slate-700 block mb-1.5">Email Address <span class="text-rose-500">*</span></label>
                 <input type="email" id="patient-email" required placeholder="patient@example.com"
-                       class="w-full px-4 py-3 bg-slate-50 rounded-2xl border border-slate-200 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 transition font-medium">
+                       class="w-full px-4 py-3 bg-[#f6faf8] rounded-2xl border border-teal-100 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 transition font-medium">
               </div>
 
               <!-- Phone (Required) -->
               <div>
                 <label class="text-xs font-bold text-slate-700 block mb-1.5">Phone Number <span class="text-rose-500">*</span></label>
                 <input type="tel" id="patient-phone" required placeholder="+92 300 1234567"
-                       class="w-full px-4 py-3 bg-slate-50 rounded-2xl border border-slate-200 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 transition font-medium">
+                       class="w-full px-4 py-3 bg-[#f6faf8] rounded-2xl border border-teal-100 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 transition font-medium">
               </div>
 
               <!-- Date of Birth (Optional) -->
               <div>
                 <label class="text-xs font-bold text-slate-700 block mb-1.5">Date of Birth <span class="text-slate-400 font-normal">(Optional)</span></label>
                 <input type="date" id="patient-dob"
-                       class="w-full px-4 py-3 bg-slate-50 rounded-2xl border border-slate-200 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 transition font-medium">
+                       class="w-full px-4 py-3 bg-[#f6faf8] rounded-2xl border border-teal-100 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 transition font-medium">
               </div>
 
               <!-- Gender (Optional) -->
               <div>
                 <label class="text-xs font-bold text-slate-700 block mb-1.5">Gender <span class="text-slate-400 font-normal">(Optional)</span></label>
-                <select id="patient-gender" class="w-full px-4 py-3 bg-slate-50 rounded-2xl border border-slate-200 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 transition font-medium">
+                <select id="patient-gender" class="w-full px-4 py-3 bg-[#f6faf8] rounded-2xl border border-teal-100 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 transition font-medium">
                   <option value="">Prefer not to disclose</option>
                   <option value="Female">Female</option>
                   <option value="Male">Male</option>
@@ -147,20 +169,20 @@
           </div>
 
           <!-- STEP 2: Doctor Selection & Dynamic Timeslots -->
-          <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200/80 space-y-6">
+          <div data-aos="fade-up" data-aos-duration="700" data-aos-delay="100" class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl shadow-teal-900/5 border border-emerald-900/10 space-y-6">
             <div class="flex items-center gap-3 pb-4 border-b border-slate-100">
-              <div class="w-8 h-8 rounded-xl bg-sky-100 text-sky-600 font-black text-sm flex items-center justify-center">2</div>
+              <div class="w-9 h-9 rounded-xl bg-teal-50 text-teal-700 font-black text-sm flex items-center justify-center ring-4 ring-teal-50/50">2</div>
               <div>
-                <h3 class="text-base font-bold text-slate-800">Doctor & Shift Slot Selection</h3>
-                <p class="text-xs text-slate-400">Dynamic 30-min slots generated directly from doctor recurring shift rules</p>
+                <h3 class="text-base font-bold text-slate-900">Doctor & Shift Slot Selection</h3>
+                <p class="text-xs text-slate-500">Dynamic 30-min slots generated directly from doctor recurring shift rules</p>
               </div>
             </div>
 
             <!-- Doctor Dropdown -->
             <div>
               <label class="text-xs font-bold text-slate-700 block mb-1.5">Select Attending Specialist <span class="text-rose-500">*</span></label>
-              <select id="doctor-select" required class="w-full px-4 py-3 bg-slate-50 rounded-2xl border border-slate-200 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 font-semibold text-slate-800">
-                <!-- Injected via js/app.js -->
+              <select id="doctor-select" required class="w-full px-4 py-3 bg-[#f6faf8] rounded-2xl border border-teal-100 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 font-semibold text-slate-800 transition">
+                <!-- Injected via app.js -->
               </select>
             </div>
 
@@ -168,17 +190,17 @@
             <div>
               <label class="text-xs font-bold text-slate-700 block mb-1.5">Appointment Date <span class="text-rose-500">*</span></label>
               <input type="date" id="appointment-date" required
-                     class="w-full px-4 py-3 bg-slate-50 rounded-2xl border border-slate-200 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium">
+                     class="w-full px-4 py-3 bg-[#f6faf8] rounded-2xl border border-teal-100 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 font-medium transition">
             </div>
 
             <!-- Dynamic Timeslots Container -->
             <div>
               <div class="flex items-center justify-between mb-2">
                 <label class="text-xs font-bold text-slate-700">Available Timeslots <span class="text-rose-500">*</span></label>
-                <span id="slots-notice" class="text-xs font-bold text-sky-600"></span>
+                <span id="slots-notice" class="text-xs font-bold text-teal-600"></span>
               </div>
               <div id="slots-container" class="space-y-2">
-                <!-- Slots injected dynamically by js/app.js -->
+                <!-- Slots injected dynamically by app.js -->
               </div>
             </div>
 
@@ -186,18 +208,18 @@
             <div>
               <label class="text-xs font-bold text-slate-700 block mb-2">Consultation Mode <span class="text-rose-500">*</span></label>
               <div class="grid sm:grid-cols-2 gap-3">
-                <label class="flex items-center gap-3 p-3.5 rounded-2xl border border-slate-200 hover:border-sky-500 cursor-pointer transition bg-slate-50/50">
-                  <input type="radio" name="appointmentType" value="In-Person" checked class="text-sky-600 focus:ring-sky-500 w-4 h-4">
+                <label class="flex items-center gap-3 p-3.5 rounded-2xl border border-teal-100 hover:border-teal-400 cursor-pointer transition bg-[#f6faf8] hover:bg-white">
+                  <input type="radio" name="appointmentType" value="In-Person" checked class="text-teal-600 focus:ring-teal-500 w-4 h-4 accent-teal-600">
                   <div>
-                    <span class="text-xs font-bold text-slate-800 block">In-Person Visit</span>
-                    <span class="text-[11px] text-slate-400">At clinic facility branch</span>
+                    <span class="text-xs font-bold text-slate-900 block">In-Person Visit</span>
+                    <span class="text-[11px] text-slate-500">At clinic facility branch</span>
                   </div>
                 </label>
-                <label class="flex items-center gap-3 p-3.5 rounded-2xl border border-slate-200 hover:border-sky-500 cursor-pointer transition bg-slate-50/50">
-                  <input type="radio" name="appointmentType" value="Video Consultation" class="text-sky-600 focus:ring-sky-500 w-4 h-4">
+                <label class="flex items-center gap-3 p-3.5 rounded-2xl border border-teal-100 hover:border-teal-400 cursor-pointer transition bg-[#f6faf8] hover:bg-white">
+                  <input type="radio" name="appointmentType" value="Video Consultation" class="text-teal-600 focus:ring-teal-500 w-4 h-4 accent-teal-600">
                   <div>
-                    <span class="text-xs font-bold text-slate-800 block">Video Telemedicine</span>
-                    <span class="text-[11px] text-slate-400">Online encrypted consultation</span>
+                    <span class="text-xs font-bold text-slate-900 block">Video Telemedicine</span>
+                    <span class="text-[11px] text-slate-500">Online encrypted consultation</span>
                   </div>
                 </label>
               </div>
@@ -205,12 +227,12 @@
           </div>
 
           <!-- STEP 3: Appointment Reason (AI Classification Field) -->
-          <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200/80 space-y-5">
+          <div data-aos="fade-up" data-aos-duration="700" data-aos-delay="200" class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl shadow-teal-900/5 border border-emerald-900/10 space-y-5">
             <div class="flex items-center gap-3 pb-4 border-b border-slate-100">
-              <div class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-600 font-black text-sm flex items-center justify-center">3</div>
+              <div class="w-9 h-9 rounded-xl bg-teal-50 text-teal-700 font-black text-sm flex items-center justify-center ring-4 ring-teal-50/50">3</div>
               <div>
-                <h3 class="text-base font-bold text-slate-800">Reason for Visit (AI Evaluated)</h3>
-                <p class="text-xs text-slate-400">Free text analyzed by our triage model for urgency and department classification</p>
+                <h3 class="text-base font-bold text-slate-900">Reason for Visit (AI Evaluated)</h3>
+                <p class="text-xs text-slate-500">Symptoms analyzed by triage model for urgency and department classification</p>
               </div>
             </div>
 
@@ -220,7 +242,7 @@
               </label>
               <textarea id="appointment-reason" rows="3" required
                         placeholder="e.g. Mild tightness in chest after brisk walking, accompanied by high blood pressure..."
-                        class="w-full px-4 py-3 bg-slate-50 rounded-2xl border border-slate-200 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition font-medium text-slate-800"></textarea>
+                        class="w-full px-4 py-3 bg-[#f6faf8] rounded-2xl border border-teal-100 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 transition font-medium text-slate-800"></textarea>
             </div>
 
             <!-- Live AI Classification Badge Preview -->
@@ -230,10 +252,10 @@
           </div>
 
           <!-- Submit Button -->
-          <div>
+          <div data-aos="fade-up" data-aos-duration="700">
             <button type="submit" 
-                    class="w-full py-4 rounded-2xl text-sm font-black text-white bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 shadow-xl shadow-sky-600/30 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
-              <span>Confirm & Dispatch Appointment (POST /appointments)</span>
+                    class="w-full py-4 rounded-2xl text-sm font-bold text-white bg-teal-600 hover:bg-teal-700 shadow-xl shadow-teal-600/30 hover:shadow-teal-600/40 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2">
+              <span>Confirm & Book Appointment</span>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </button>
           </div>
@@ -241,44 +263,47 @@
         </div>
 
         <!-- Right 4 Columns: Real-Time Sticky Summary Card -->
-        <div class="lg:col-span-4">
-          <div class="sticky top-28 bg-white rounded-3xl p-6 shadow-sm border border-slate-200/80 space-y-5">
+        <div class="lg:col-span-4" data-aos="fade-left" data-aos-duration="800" data-aos-delay="150">
+          <div class="sticky top-28 bg-white rounded-3xl p-6 shadow-xl shadow-teal-900/5 border border-emerald-900/10 space-y-5">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 class="text-sm font-black text-slate-900 uppercase tracking-wider">Live Summary</h3>
-              <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">Real-Time</span>
+              <h3 class="text-xs font-black text-slate-900 uppercase tracking-wider">Live Summary</h3>
+              <span class="text-[10px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                Real-Time
+              </span>
             </div>
 
-            <div class="space-y-3 text-xs">
-              <div class="flex justify-between">
-                <span class="text-slate-400 font-medium">Doctor:</span>
-                <span id="summary-doctor-name" class="font-bold text-slate-800 text-right">Not selected</span>
+            <div class="space-y-3.5 text-xs">
+              <div class="flex justify-between items-center">
+                <span class="text-slate-500 font-medium">Doctor:</span>
+                <span id="summary-doctor-name" class="font-bold text-slate-900 text-right">Not selected</span>
               </div>
-              <div class="flex justify-between">
-                <span class="text-slate-400 font-medium">Date:</span>
-                <span id="summary-date" class="font-bold text-slate-800 text-right">Not selected</span>
+              <div class="flex justify-between items-center">
+                <span class="text-slate-500 font-medium">Date:</span>
+                <span id="summary-date" class="font-bold text-slate-900 text-right">Not selected</span>
               </div>
-              <div class="flex justify-between">
-                <span class="text-slate-400 font-medium">Time Slot:</span>
-                <span id="summary-slot" class="font-bold text-sky-600 text-right">Not selected</span>
+              <div class="flex justify-between items-center">
+                <span class="text-slate-500 font-medium">Time Slot:</span>
+                <span id="summary-slot" class="font-bold text-teal-600 text-right">Not selected</span>
               </div>
-              <div class="flex justify-between">
-                <span class="text-slate-400 font-medium">Type:</span>
+              <div class="flex justify-between items-center">
+                <span class="text-slate-500 font-medium">Type:</span>
                 <span id="summary-type" class="font-semibold text-slate-700 text-right">In-Person</span>
               </div>
-              <div class="flex justify-between pt-3 border-t border-slate-100">
-                <span class="text-slate-500 font-bold">Consultation Fee:</span>
-                <span id="summary-fee" class="text-lg font-black text-slate-900">$0.00</span>
+              <div class="flex justify-between items-center pt-3 border-t border-slate-100">
+                <span class="text-slate-700 font-bold text-sm">Consultation Fee:</span>
+                <span id="summary-fee" class="text-xl font-black text-teal-700">$0.00</span>
               </div>
             </div>
 
-            <!-- n8n Integration Note -->
-            <div class="p-3.5 rounded-2xl bg-indigo-50/70 border border-indigo-100 text-[11px] text-indigo-900 space-y-1">
+            <!-- Calendar & Sync Note -->
+            <div class="p-4 rounded-2xl bg-teal-50/70 border border-teal-100 text-[11px] text-teal-900 space-y-1">
               <div class="font-bold flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-indigo-600 animate-ping"></span>
-                <span>n8n Webhook Ready</span>
+                <span class="w-2 h-2 rounded-full bg-teal-600 animate-ping"></span>
+                <span>Automated Calendar Sync</span>
               </div>
-              <p class="text-slate-600 leading-snug">
-                Submitting this form triggers Person 2's n8n workflow for Google Calendar synchronization and alert dispatch.
+              <p class="text-slate-600 leading-relaxed">
+                Confirming will instantly sync with doctor's schedule and send you a confirmation link.
               </p>
             </div>
           </div>
@@ -292,9 +317,36 @@
   <!-- ========================================================= -->
   <!-- 3. FOOTER                                                 -->
   <!-- ========================================================= -->
-  <footer class="bg-white border-t border-slate-200 py-6 text-xs text-slate-500 mt-auto text-center">
-    <p>© 2026 MediPulse.AI • Appointment Booking Engine</p>
+  <footer class="bg-white border-t border-emerald-900/10 py-6 text-xs text-slate-500 mt-auto text-center font-medium relative z-10">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <p>© 2026 ClinIQ.AI • Appointment Booking Engine</p>
+      <div class="flex gap-4 text-slate-400">
+        <a href="index.html" class="hover:text-teal-600 transition">Home</a>
+        <a href="doctor.html" class="hover:text-teal-600 transition">Find Doctors</a>
+        <a href="dashboard.html" class="hover:text-teal-600 transition">Staff Portal</a>
+      </div>
+    </div>
   </footer>
+
+  <!-- AOS Script -->
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      once: true,
+      duration: 750,
+      easing: 'ease-out-cubic',
+      offset: 50
+    });
+
+    // Mobile Menu Toggle
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (menuBtn && mobileMenu) {
+      menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
+  </script>
 
   <!-- Single Master JavaScript Engine -->
   <script src="app.js"></script>

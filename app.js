@@ -1,19 +1,5 @@
-/* =========================================================================
-   MediPulse AI - Doctor Appointment System
-   SINGLE JAVASCRIPT FILE (js/app.js)
-   
-   Is file ko 5 aasan hisson mein divide kiya gaya hai:
-   SECTION 1: APNA DATA YAHAN CHANGE KAREIN (Doctors, Shifts, Settings)
-   SECTION 2: AODHIYA TOOLS (Popup alerts aur Date format)
-   SECTION 3: DOCTORS DIRECTORY (Search aur Filter logic)
-   SECTION 4: BOOKING FORM (Live slots generator aur AI triage)
-   SECTION 5: DOCTOR & ADMIN DASHBOARD (Metrics, Table, Shifts manager)
-   ========================================================================= */
-
-
 // =========================================================================
-// SECTION 1: APNA DATA YAHAN EDIT KAREIN (Third-Person Friendly)
-// Koi bhi teesra person naya doctor ya shift add karne ke liye yahan edit kare
+// ClinIQ.AI - CLINICAL OPERATIONS & APPOINTMENT AUTOMATION ENGINE
 // =========================================================================
 
 // 1. DOCTORS KI LIST
@@ -52,7 +38,7 @@ const DEFAULT_DOCTORS = [
     branch: "City Health Pavilion",
     rating: 4.9,
     consultationFee: 60,
-    avatar: "https://images.unsplash.com/photo-1594824813535-a74b60e61d8f?auto=format&fit=crop&q=80&w=400",
+    avatar: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=400",
     activeDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
     education: "MBBS, DCH - Pediatrics",
     bio: "Child healthcare, newborn checkups, and routine vaccinations."
@@ -98,10 +84,9 @@ const DEFAULT_DOCTORS = [
   }
 ];
 
-// 2. DOCTOR WEEKLY SHIFTS (Requirement 2.4)
-// Yahan par doctor ke consultation shift hours defined hain
+// 2. DOCTOR WEEKLY SHIFTS
 const DEFAULT_SHIFTS = [
-  // Dr. Ayesha (Monday morning + evening, Wednesday, Friday)
+  // Dr. Ayesha (Monday, Wednesday, Friday)
   { id: "SFT-1", doctorId: "DOC-001", dayOfWeek: "Monday", startTime: "09:00", endTime: "13:00", slotDurationMinutes: 30 },
   { id: "SFT-2", doctorId: "DOC-001", dayOfWeek: "Monday", startTime: "14:00", endTime: "18:00", slotDurationMinutes: 30 },
   { id: "SFT-3", doctorId: "DOC-001", dayOfWeek: "Wednesday", startTime: "09:00", endTime: "13:00", slotDurationMinutes: 30 },
@@ -128,7 +113,7 @@ const DEFAULT_SHIFTS = [
   { id: "SFT-14", doctorId: "DOC-006", dayOfWeek: "Tuesday", startTime: "09:00", endTime: "13:00", slotDurationMinutes: 30 }
 ];
 
-// 3. SAMPLE APPOINTMENTS (Dashboard testing ke liye)
+// 3. SAMPLE APPOINTMENTS
 const DEFAULT_APPOINTMENTS = [
   {
     id: "APT-1001",
@@ -138,7 +123,7 @@ const DEFAULT_APPOINTMENTS = [
     doctorId: "DOC-001",
     doctorName: "Dr. Ayesha Malik",
     doctorSpecialty: "Cardiology",
-    date: new Date().toISOString().split('T')[0], // Aaj ki date
+    date: new Date().toISOString().split('T')[0],
     timeSlot: "09:30 AM",
     appointmentType: "In-Person",
     reason: "Chest tightness after walking and elevated BP.",
@@ -158,13 +143,13 @@ const DEFAULT_APPOINTMENTS = [
     timeSlot: "11:00 AM",
     appointmentType: "Video Consultation",
     reason: "Right-sided pulsing migraine for 2 weeks.",
-    aiCategory: "Neurology Specialist Review",
+    aiCategory: "Neurology Review",
     aiSeverity: "Medium",
     status: "Processing"
   }
 ];
 
-// 4. AI SYMPTOMS CLASSIFICATION RULES (Symptom check karne ke liye)
+// 4. AI SYMPTOMS CLASSIFICATION RULES
 const AI_KEYWORDS = [
   { words: ["chest", "heart", "bp", "blood pressure", "breathless", "angina"], category: "Cardiology Urgent Triage", severity: "High", specialty: "Cardiology" },
   { words: ["headache", "migraine", "dizzy", "brain", "numbness", "seizure"], category: "Neurology Review", severity: "Medium", specialty: "Neurology" },
@@ -174,12 +159,12 @@ const AI_KEYWORDS = [
   { words: ["fever", "cough", "cold", "flu", "weakness", "checkup"], category: "General Practice", severity: "Low", specialty: "General Medicine" }
 ];
 
-// 5. n8n AUTOMATION SETTINGS (Person 2 Integration)
+// 5. n8n AUTOMATION SETTINGS
 let N8N_WEBHOOK_URL = "https://automation.yourclinic.internal/webhook/appointment-booking";
 
 
 // =========================================================================
-// DATA STORAGE HELPERS (Browser me data save rakhne ke liye)
+// DATA STORAGE HELPERS
 // =========================================================================
 
 function getSavedDoctors() {
@@ -219,10 +204,10 @@ function saveShifts(shiftsList) {
 
 
 // =========================================================================
-// SECTION 2: COMMON UTILITIES (Alerts & Formatting)
+// SECTION 2: COMMON UTILITIES
 // =========================================================================
 
-// Alert Notification Popup
+// Alert Notification Toast
 function showToast(message, type = 'success') {
   let box = document.getElementById('toast-box');
   if (!box) {
@@ -233,8 +218,11 @@ function showToast(message, type = 'success') {
   }
 
   const alert = document.createElement('div');
-  const bgColor = type === 'error' ? 'bg-rose-600 text-white' : (type === 'warning' ? 'bg-amber-500 text-white' : 'bg-slate-900 text-white');
-  alert.className = `p-4 rounded-2xl shadow-xl text-xs font-bold flex items-center justify-between transition-all ${bgColor}`;
+  const bgColor = type === 'error' 
+    ? 'bg-rose-600 text-white' 
+    : (type === 'warning' ? 'bg-amber-500 text-white' : 'bg-teal-900 text-white border border-teal-700/50 shadow-xl shadow-teal-900/20');
+  
+  alert.className = `p-4 rounded-2xl shadow-lg text-xs font-bold flex items-center justify-between transition-all ${bgColor}`;
   alert.innerHTML = `
     <span>${message}</span>
     <button onclick="this.parentElement.remove()" class="ml-2 text-white font-bold opacity-75 hover:opacity-100">✕</button>
@@ -244,7 +232,7 @@ function showToast(message, type = 'success') {
   setTimeout(() => alert.remove(), 3500);
 }
 
-// Date ko aasan format mein badalta hai: "2026-09-15" -> "Tue, Sep 15, 2026"
+// Date formatter: "2026-09-15" -> "Tue, Sep 15, 2026"
 function formatDate(dateString) {
   if (!dateString) return 'N/A';
   const d = new Date(dateString + 'T00:00:00');
@@ -253,7 +241,7 @@ function formatDate(dateString) {
 
 
 // =========================================================================
-// SECTION 3: DOCTORS DIRECTORY (doctors.html)
+// SECTION 3: DOCTORS DIRECTORY (doctor.html)
 // =========================================================================
 
 let selectedSpecialtyFilter = 'all';
@@ -263,12 +251,12 @@ let searchKeyword = '';
 
 function setupDoctorsPage() {
   const grid = document.getElementById('doctors-grid');
-  if (!grid) return; // Agar ye page doctors.html nahi hai toh aage mat chalo
+  if (!grid) return;
 
   renderSpecialtyPills();
   renderDoctorsList();
 
-  // Search input event
+  // Search input
   const searchInput = document.getElementById('doctor-search');
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
@@ -277,7 +265,7 @@ function setupDoctorsPage() {
     });
   }
 
-  // Branch filter event
+  // Branch filter
   const branchSelect = document.getElementById('branch-filter');
   if (branchSelect) {
     branchSelect.addEventListener('change', (e) => {
@@ -286,7 +274,7 @@ function setupDoctorsPage() {
     });
   }
 
-  // Day filter event
+  // Day filter
   const daySelect = document.getElementById('day-filter');
   if (daySelect) {
     daySelect.addEventListener('change', (e) => {
@@ -296,7 +284,7 @@ function setupDoctorsPage() {
   }
 }
 
-// Specialty ke buttons render karein
+// Render specialty filter pills with Teal Styling
 function renderSpecialtyPills() {
   const container = document.getElementById('specialty-pills-container');
   if (!container) return;
@@ -307,11 +295,11 @@ function renderSpecialtyPills() {
     const isSelected = selectedSpecialtyFilter === cat;
     const label = cat === 'all' ? 'All Disciplines' : cat;
     const btnClass = isSelected
-      ? 'bg-slate-900 text-white font-bold'
-      : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 font-medium';
+      ? 'bg-teal-600 text-white font-bold shadow-sm shadow-teal-600/30'
+      : 'bg-white text-slate-700 border border-teal-100 hover:bg-teal-50/70 font-medium';
 
     return `
-      <button onclick="changeSpecialtyFilter('${cat}')" class="px-4 py-2 rounded-2xl text-xs transition ${btnClass}">
+      <button onclick="changeSpecialtyFilter('${cat}')" class="px-4 py-2 rounded-2xl text-xs transition duration-200 ${btnClass}">
         ${label}
       </button>
     `;
@@ -338,7 +326,7 @@ function resetAllFilters() {
   renderDoctorsList();
 }
 
-// Doctor cards screen par dikhana
+// Render Doctor Cards with Teal & Mint Palette
 function renderDoctorsList() {
   const grid = document.getElementById('doctors-grid');
   const countBadge = document.getElementById('doctors-count');
@@ -365,41 +353,41 @@ function renderDoctorsList() {
 
   if (filtered.length === 0) {
     grid.innerHTML = `
-      <div class="col-span-full py-12 text-center bg-white rounded-3xl border border-dashed border-slate-200 p-8">
+      <div class="col-span-full py-12 text-center bg-white rounded-3xl border border-dashed border-teal-200 p-8">
         <p class="text-sm font-bold text-slate-700">No doctors match your search or filter.</p>
-        <button onclick="resetAllFilters()" class="mt-3 px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold">Reset Filters</button>
+        <button onclick="resetAllFilters()" class="mt-3 px-5 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold transition">Reset Filters</button>
       </div>
     `;
     return;
   }
 
   grid.innerHTML = filtered.map(doc => {
-    const dayTags = doc.activeDays.map(d => `<span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded text-[10px] font-bold">${d.slice(0, 3)}</span>`).join(' ');
+    const dayTags = doc.activeDays.map(d => `<span class="px-2 py-0.5 bg-[#f6faf8] text-teal-800 border border-teal-100 rounded text-[10px] font-bold">${d.slice(0, 3)}</span>`).join(' ');
 
     return `
-      <div class="bg-white rounded-3xl border border-slate-200/90 p-6 shadow-sm hover:shadow-lg transition flex flex-col justify-between">
+      <div class="bg-white rounded-3xl border border-emerald-900/10 p-6 shadow-sm hover:shadow-xl hover:shadow-teal-900/5 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
         <div>
           <div class="flex gap-4 items-start mb-3">
-            <img src="${doc.avatar}" alt="${doc.name}" class="w-16 h-16 rounded-2xl object-cover ring-2 ring-slate-100 flex-shrink-0">
+            <img src="${doc.avatar}" alt="${doc.name}" class="w-16 h-16 rounded-2xl object-cover ring-2 ring-teal-500/20 flex-shrink-0">
             <div class="min-w-0">
-              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-50 text-sky-700 border border-sky-100">${doc.specialty}</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-teal-50 text-teal-800 border border-teal-200/70">${doc.specialty}</span>
               <h3 class="font-bold text-slate-900 text-base mt-1 truncate">${doc.name}</h3>
-              <p class="text-xs text-slate-400 font-medium">${doc.experienceYears} Yrs Exp • ★ ${doc.rating}</p>
+              <p class="text-xs text-slate-500 font-medium">${doc.experienceYears} Yrs Exp • <span class="text-amber-500 font-bold">★ ${doc.rating}</span></p>
             </div>
           </div>
-          <p class="text-xs text-slate-600 mb-3 line-clamp-2">${doc.bio}</p>
+          <p class="text-xs text-slate-600 mb-3 line-clamp-2 leading-relaxed">${doc.bio}</p>
           <p class="text-xs text-slate-500 mb-2 font-medium">📍 ${doc.branch}</p>
           <div class="flex flex-wrap gap-1 mb-4">${dayTags}</div>
         </div>
 
         <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
           <div>
-            <span class="text-[10px] text-slate-400 block font-bold">Consultation Fee</span>
+            <span class="text-[10px] text-slate-400 block font-bold uppercase tracking-wider">Fee</span>
             <span class="text-lg font-black text-slate-900">$${doc.consultationFee}</span>
           </div>
           <div class="flex gap-2">
-            <button onclick="viewDoctorDetails('${doc.id}')" class="px-3.5 py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition">Profile</button>
-            <a href="booking.html?doctor=${doc.id}" class="px-4 py-2 text-xs font-black text-white bg-sky-600 hover:bg-sky-700 rounded-xl shadow-md transition">Book Slot</a>
+            <button onclick="viewDoctorDetails('${doc.id}')" class="px-3.5 py-2 text-xs font-bold text-slate-700 bg-white border border-teal-100 hover:bg-teal-50 rounded-xl transition">Profile</button>
+            <a href="booking.html?doctor=${doc.id}" class="px-4 py-2 text-xs font-bold text-white bg-teal-600 hover:bg-teal-700 rounded-xl shadow-sm shadow-teal-600/30 transition">Book Slot</a>
           </div>
         </div>
       </div>
@@ -407,7 +395,7 @@ function renderDoctorsList() {
   }).join('');
 }
 
-// Doctor Details Popup Modal
+// Doctor Details Popup Modal with Teal Theme
 function viewDoctorDetails(doctorId) {
   const doctors = getSavedDoctors();
   const doc = doctors.find(d => d.id === doctorId);
@@ -415,29 +403,29 @@ function viewDoctorDetails(doctorId) {
 
   const shifts = getSavedShifts().filter(s => s.doctorId === doctorId);
   const shiftList = shifts.length > 0 
-    ? shifts.map(s => `<li class="flex justify-between text-xs py-1.5 border-b border-slate-100"><strong>${s.dayOfWeek}</strong> <span class="text-sky-600 font-bold">${s.startTime} - ${s.endTime}</span></li>`).join('')
+    ? shifts.map(s => `<li class="flex justify-between text-xs py-1.5 border-b border-slate-100"><strong>${s.dayOfWeek}</strong> <span class="text-teal-700 font-bold">${s.startTime} - ${s.endTime}</span></li>`).join('')
     : '<li class="text-xs text-slate-400 py-1">Standard shift hours available upon booking.</li>';
 
   const modalHtml = `
     <div id="doctor-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-      <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+      <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-teal-100">
         <div class="flex items-center justify-between pb-3 border-b border-slate-100">
           <div class="flex items-center gap-3">
-            <img src="${doc.avatar}" class="w-14 h-14 rounded-2xl object-cover">
+            <img src="${doc.avatar}" class="w-14 h-14 rounded-2xl object-cover ring-2 ring-teal-500/20">
             <div>
               <h3 class="font-bold text-slate-900 text-base">${doc.name}</h3>
-              <p class="text-xs text-sky-600 font-semibold">${doc.specialty} • ${doc.education}</p>
+              <p class="text-xs text-teal-600 font-semibold">${doc.specialty} • ${doc.education}</p>
             </div>
           </div>
           <button onclick="document.getElementById('doctor-modal').remove()" class="text-slate-400 hover:text-slate-700 font-bold text-lg p-1">✕</button>
         </div>
 
         <div class="text-xs space-y-3 text-slate-600">
-          <p>${doc.bio}</p>
-          <div class="bg-slate-50 p-3 rounded-xl space-y-1">
+          <p class="leading-relaxed">${doc.bio}</p>
+          <div class="bg-[#f6faf8] p-3 rounded-2xl border border-teal-100 space-y-1">
             <p><strong>Hospital Branch:</strong> ${doc.branch}</p>
             <p><strong>Experience:</strong> ${doc.experienceYears} Years</p>
-            <p><strong>Fee:</strong> $${doc.consultationFee}</p>
+            <p><strong>Consultation Fee:</strong> $${doc.consultationFee}</p>
           </div>
           <div>
             <strong class="text-slate-800 block mb-1">Weekly Consultation Shift Hours:</strong>
@@ -447,7 +435,7 @@ function viewDoctorDetails(doctorId) {
 
         <div class="flex justify-end gap-2 pt-2">
           <button onclick="document.getElementById('doctor-modal').remove()" class="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl">Close</button>
-          <a href="booking.html?doctor=${doc.id}" class="px-5 py-2 text-xs font-black text-white bg-sky-600 hover:bg-sky-700 rounded-xl">Book Slot</a>
+          <a href="booking.html?doctor=${doc.id}" class="px-5 py-2 text-xs font-bold text-white bg-teal-600 hover:bg-teal-700 rounded-xl shadow-sm shadow-teal-600/30">Book Slot</a>
         </div>
       </div>
     </div>
@@ -468,9 +456,9 @@ let currentAiResult = null;
 
 function setupBookingPage() {
   const form = document.getElementById('appointment-form');
-  if (!form) return; // Agar ye page booking.html nahi hai toh return
+  if (!form) return;
 
-  // Populate doctor select dropdown
+  // Populate doctor select
   const select = document.getElementById('doctor-select');
   const doctors = getSavedDoctors();
   if (select) {
@@ -485,7 +473,7 @@ function setupBookingPage() {
     });
   }
 
-  // Set date picker (Minimum today)
+  // Set date picker
   const dateInput = document.getElementById('appointment-date');
   if (dateInput) {
     const today = new Date().toISOString().split('T')[0];
@@ -501,7 +489,7 @@ function setupBookingPage() {
     });
   }
 
-  // Agar URL se doctor aaya ho (?doctor=DOC-001)
+  // Check URL param (?doctor=DOC-001)
   const urlParamDoctor = new URLSearchParams(window.location.search).get('doctor');
   if (urlParamDoctor && select) {
     select.value = urlParamDoctor;
@@ -516,7 +504,7 @@ function setupBookingPage() {
     });
   }
 
-  // Mode radio buttons (In-person vs video)
+  // Mode radio buttons
   document.querySelectorAll('input[name="appointmentType"]').forEach(r => {
     r.addEventListener('change', refreshBookingSummary);
   });
@@ -527,14 +515,14 @@ function setupBookingPage() {
   refreshBookingSummary();
 }
 
-// Doctor shift timings ke mutabiq 30-min ke slots calculate karein
+// Generate 30-min time slots based on doctor shift timings
 function calculateOpenSlots() {
   const container = document.getElementById('slots-container');
   const notice = document.getElementById('slots-notice');
   if (!container) return;
 
   if (!currentBookingDoctorId || !currentBookingDate) {
-    container.innerHTML = `<div class="p-6 text-center text-xs text-slate-400 border border-dashed border-slate-200 rounded-2xl">Select a doctor and date to view available time slots.</div>`;
+    container.innerHTML = `<div class="p-6 text-center text-xs text-slate-400 border border-dashed border-teal-200 rounded-2xl">Select a doctor and date to view available time slots.</div>`;
     if (notice) notice.textContent = '';
     return;
   }
@@ -545,21 +533,21 @@ function calculateOpenSlots() {
   const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const selectedDayName = dayNames[dateObj.getDay()];
 
-  // Doctor ki shift check karein is din par
+  // Filter shifts
   const shifts = getSavedShifts().filter(s => s.doctorId === currentBookingDoctorId && s.dayOfWeek.toLowerCase() === selectedDayName.toLowerCase());
 
   if (shifts.length === 0) {
     container.innerHTML = `
-      <div class="p-4 bg-amber-50 text-amber-800 rounded-2xl border border-amber-200 text-xs">
-        <strong>${doctor.name}</strong> is off duty on <strong>${selectedDayName}s</strong>.<br>
-        Active days: <span class="font-bold">${doctor.activeDays.join(', ')}</span>
+      <div class="p-4 bg-amber-50 text-amber-900 rounded-2xl border border-amber-200 text-xs">
+        <strong>${doctor.name}</strong> has no active shift on <strong>${selectedDayName}s</strong>.<br>
+        Available days: <span class="font-bold text-teal-800">${doctor.activeDays.join(', ')}</span>
       </div>
     `;
-    if (notice) notice.textContent = 'Doctor off shift';
+    if (notice) notice.textContent = 'Doctor off duty';
     return;
   }
 
-  // 30-minute intervals generate karein
+  // Generate slots
   let slots = [];
   shifts.forEach(s => {
     let [startHour, startMin] = s.startTime.split(':').map(Number);
@@ -578,7 +566,7 @@ function calculateOpenSlots() {
     }
   });
 
-  // Jo slots pehle se book hain unhe check karein
+  // Already booked check
   const appointments = getSavedAppointments();
   const alreadyBooked = appointments
     .filter(a => a.doctorId === currentBookingDoctorId && a.date === currentBookingDate && a.status !== 'Cancelled')
@@ -601,8 +589,8 @@ function calculateOpenSlots() {
         }
 
         const activeClass = isSelected
-          ? 'bg-sky-600 text-white font-bold shadow-md ring-2 ring-sky-600'
-          : 'bg-white text-slate-700 border border-slate-200 hover:border-sky-500 font-semibold';
+          ? 'bg-teal-600 text-white font-bold shadow-md ring-2 ring-teal-500'
+          : 'bg-white text-slate-700 border border-teal-100 hover:border-teal-400 hover:bg-teal-50/50 font-semibold';
 
         return `<button type="button" onclick="chooseSlot('${slot}')" class="py-2.5 px-3 rounded-xl text-xs transition ${activeClass}">${slot}</button>`;
       }).join('')}
@@ -616,7 +604,7 @@ function chooseSlot(slot) {
   refreshBookingSummary();
 }
 
-// Symptom text par real-time AI Urgency classification
+// Symptom AI urgency analysis with Teal Theme Preview Box
 function analyzeSymptomsWithAi(text) {
   const box = document.getElementById('ai-classification-preview');
   if (!box) return;
@@ -638,21 +626,21 @@ function analyzeSymptomsWithAi(text) {
   }
 
   currentAiResult = result;
-  const badgeClass = result.severity === 'High' ? 'bg-rose-100 text-rose-800' : (result.severity === 'Medium' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800');
+  const badgeClass = result.severity === 'High' ? 'bg-rose-100 text-rose-800 border border-rose-200' : (result.severity === 'Medium' ? 'bg-amber-100 text-amber-800 border border-amber-200' : 'bg-emerald-100 text-emerald-800 border border-emerald-200');
 
   box.innerHTML = `
-    <div class="p-3 bg-sky-50/70 border border-sky-100 rounded-xl text-xs space-y-1">
+    <div class="p-3.5 bg-teal-50/80 border border-teal-200/80 rounded-2xl text-xs space-y-1">
       <div class="flex items-center justify-between font-bold">
-        <span>AI Pre-Triage Prediction:</span>
-        <span class="px-2 py-0.5 rounded-full text-[10px] ${badgeClass}">${result.severity} Priority</span>
+        <span class="text-teal-900">AI Pre-Triage Prediction:</span>
+        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${badgeClass}">${result.severity} Priority</span>
       </div>
-      <p class="font-semibold text-slate-800">${result.category}</p>
-      <p class="text-[11px] text-slate-500">Department: <strong class="text-sky-700">${result.specialty}</strong> (Ready for n8n webhook payload)</p>
+      <p class="font-bold text-slate-900">${result.category}</p>
+      <p class="text-[11px] text-slate-600">Department Match: <strong class="text-teal-700">${result.specialty}</strong></p>
     </div>
   `;
 }
 
-// Right column sticky summary card refresh
+// Refresh Sticky Summary
 function refreshBookingSummary() {
   const doctors = getSavedDoctors();
   const doc = currentBookingDoctorId ? doctors.find(d => d.id === currentBookingDoctorId) : null;
@@ -665,7 +653,7 @@ function refreshBookingSummary() {
   if (document.getElementById('summary-type')) document.getElementById('summary-type').textContent = type;
 }
 
-// Form Submit -> Save to localStorage & simulate n8n webhook dispatch
+// Form Submit -> Save & Show Success Modal
 function submitAppointmentForm(e) {
   e.preventDefault();
 
@@ -701,12 +689,12 @@ function submitAppointmentForm(e) {
     status: 'Pending'
   };
 
-  // 1. Save to appointments array
+  // 1. Save to appointments list
   const allAppointments = getSavedAppointments();
   allAppointments.unshift(newAppointment);
   saveAppointments(allAppointments);
 
-  // 2. n8n Payload format (Person 1 -> Person 2)
+  // 2. n8n Payload
   const n8nPayload = {
     event: "appointment.created",
     timestamp: new Date().toISOString(),
@@ -717,28 +705,28 @@ function submitAppointmentForm(e) {
   };
   localStorage.setItem('last_n8n_payload', JSON.stringify(n8nPayload));
 
-  // 3. Show Success Modal Popup
+  // 3. Success Modal Popup with Teal Styling
   const modalHtml = `
     <div id="booking-success-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-      <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+      <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 border border-teal-100">
         <div class="text-center">
-          <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-2 text-xl font-black">✓</div>
+          <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-2 text-xl font-black border border-emerald-200">✓</div>
           <h2 class="text-xl font-black text-slate-900">Appointment Booked Successfully!</h2>
-          <p class="text-xs text-slate-400">Booking ID: <strong class="text-slate-800">${newAppointment.id}</strong></p>
+          <p class="text-xs text-slate-500">Booking Reference: <strong class="text-slate-900">${newAppointment.id}</strong></p>
         </div>
 
-        <div class="bg-slate-50 p-4 rounded-2xl text-xs space-y-2 border border-slate-100">
+        <div class="bg-[#f6faf8] p-4 rounded-2xl text-xs space-y-2 border border-teal-100">
           <div class="flex justify-between"><span>Patient:</span><strong>${newAppointment.patientName}</strong></div>
-          <div class="flex justify-between"><span>Doctor:</span><strong class="text-sky-700">${newAppointment.doctorName}</strong></div>
+          <div class="flex justify-between"><span>Doctor:</span><strong class="text-teal-700">${newAppointment.doctorName}</strong></div>
           <div class="flex justify-between"><span>Date & Slot:</span><strong>${formatDate(newAppointment.date)} at ${newAppointment.timeSlot}</strong></div>
-          <div class="flex justify-between"><span>AI Triage:</span><strong class="text-indigo-700">${newAppointment.aiCategory}</strong></div>
+          <div class="flex justify-between"><span>AI Triage:</span><strong class="text-emerald-700">${newAppointment.aiCategory}</strong></div>
         </div>
 
-        <p class="text-[11px] text-slate-400">Payload ready for Person 2 n8n workflow for Google Calendar Sync & patient notifications.</p>
+        <p class="text-[11px] text-slate-500 text-center">Automated Calendar reminder & sync dispatched successfully.</p>
 
         <div class="flex justify-end gap-2 pt-2">
-          <a href="dashboard.html" class="px-4 py-2 text-xs font-bold text-slate-700 bg-slate-100 rounded-xl hover:bg-slate-200">View in Dashboard</a>
-          <button onclick="window.location.href='index.html'" class="px-5 py-2 text-xs font-black text-white bg-sky-600 hover:bg-sky-700 rounded-xl">Done</button>
+          <a href="dashboard.html" class="px-4 py-2 text-xs font-bold text-slate-700 bg-white border border-teal-100 rounded-xl hover:bg-teal-50">View in Dashboard</a>
+          <button onclick="window.location.href='index.html'" class="px-5 py-2 text-xs font-bold text-white bg-teal-600 hover:bg-teal-700 rounded-xl shadow-sm shadow-teal-600/30">Done</button>
         </div>
       </div>
     </div>
@@ -757,7 +745,7 @@ let currentDashboardDoctorFilter = 'all';
 
 function setupDashboardPage() {
   const tbody = document.getElementById('appointments-tbody');
-  if (!tbody) return; // Agar ye page dashboard.html nahi hai toh return
+  if (!tbody) return;
 
   refreshMetricsCards();
   populateDoctorDropdowns();
@@ -790,7 +778,7 @@ function setupDashboardPage() {
   }
 }
 
-// 5 Metric Counters (Spec 2.3)
+// Refresh Metric Counters
 function refreshMetricsCards() {
   const appointments = getSavedAppointments();
   const today = new Date().toISOString().split('T')[0];
@@ -808,7 +796,7 @@ function refreshMetricsCards() {
   if (document.getElementById('metric-pending')) document.getElementById('metric-pending').textContent = pending;
 }
 
-// Dashboard doctor dropdowns populate karein
+// Populate Doctor Dropdowns
 function populateDoctorDropdowns() {
   const doctors = getSavedDoctors();
   const filterSelect = document.getElementById('dashboard-doctor-filter');
@@ -823,7 +811,7 @@ function populateDoctorDropdowns() {
   }
 }
 
-// Tab Switcher (Appointments / Availability / n8n)
+// Tab Switcher with Teal Styles
 function switchDashboardTab(tabName) {
   const tabs = ['appointments', 'availability', 'n8n'];
   tabs.forEach(t => {
@@ -831,8 +819,8 @@ function switchDashboardTab(tabName) {
     const section = document.getElementById(`tab-section-${t}`);
     if (btn) {
       btn.className = (t === tabName) 
-        ? 'px-4 py-2 rounded-xl text-xs font-bold bg-sky-600 text-white shadow-md' 
-        : 'px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50';
+        ? 'px-4 py-2 rounded-xl text-xs font-bold bg-teal-600 text-white shadow-sm shadow-teal-600/25 transition' 
+        : 'px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-teal-700 hover:bg-teal-50/60 transition';
     }
     if (section) {
       section.classList.toggle('hidden', t !== tabName);
@@ -847,15 +835,15 @@ function setStatusFilter(status) {
   currentDashboardStatusFilter = status;
   document.querySelectorAll('.status-filter-btn').forEach(btn => {
     if (btn.getAttribute('data-status') === status) {
-      btn.className = 'status-filter-btn px-3 py-1 rounded-lg text-xs font-bold bg-slate-900 text-white transition';
+      btn.className = 'status-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white transition';
     } else {
-      btn.className = 'status-filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition';
+      btn.className = 'status-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-white border border-teal-100 text-slate-600 hover:bg-teal-50 transition';
     }
   });
   renderDashboardTable();
 }
 
-// Appointments Table Render
+// Render Dashboard Appointments Table
 function renderDashboardTable() {
   const tbody = document.getElementById('appointments-tbody');
   const countEl = document.getElementById('table-results-count');
@@ -882,28 +870,28 @@ function renderDashboardTable() {
   }
 
   tbody.innerHTML = filtered.map(a => {
-    let badgeClass = 'bg-amber-100 text-amber-800';
-    if (a.status === 'Confirmed') badgeClass = 'bg-emerald-100 text-emerald-800';
-    else if (a.status === 'Processing') badgeClass = 'bg-sky-100 text-sky-800';
-    else if (a.status === 'Cancelled') badgeClass = 'bg-rose-100 text-rose-800';
-    else if (a.status === 'Completed') badgeClass = 'bg-purple-100 text-purple-800';
+    let badgeClass = 'bg-amber-50 text-amber-800 border border-amber-200';
+    if (a.status === 'Confirmed') badgeClass = 'bg-emerald-50 text-emerald-800 border border-emerald-200';
+    else if (a.status === 'Processing') badgeClass = 'bg-teal-50 text-teal-800 border border-teal-200';
+    else if (a.status === 'Cancelled') badgeClass = 'bg-rose-50 text-rose-800 border border-rose-200';
+    else if (a.status === 'Completed') badgeClass = 'bg-purple-50 text-purple-800 border border-purple-200';
 
     return `
-      <tr class="hover:bg-slate-50 transition border-b border-slate-100 text-xs">
+      <tr class="hover:bg-[#f6faf8] transition border-b border-slate-100 text-xs">
         <td class="px-6 py-4">
           <span class="font-bold text-slate-900 block text-sm">${a.patientName}</span>
           <span class="text-slate-400 font-mono text-[11px]">${a.id} • ${a.patientPhone}</span>
         </td>
         <td class="px-6 py-4">
           <span class="font-bold text-slate-800 block">${a.doctorName}</span>
-          <span class="text-sky-600 font-medium text-[11px]">${a.doctorSpecialty}</span>
+          <span class="text-teal-600 font-medium text-[11px]">${a.doctorSpecialty}</span>
         </td>
         <td class="px-6 py-4">
           <span class="font-bold text-slate-700 block">${formatDate(a.date)}</span>
           <span class="text-slate-500 text-[11px]">${a.timeSlot} (${a.appointmentType})</span>
         </td>
         <td class="px-6 py-4">
-          <span class="px-2 py-0.5 rounded-lg font-bold text-[11px] bg-slate-100 text-slate-700 border border-slate-200 inline-block">${a.aiCategory}</span>
+          <span class="px-2.5 py-1 rounded-lg font-bold text-[11px] bg-white text-slate-700 border border-teal-100 inline-block shadow-2xs">${a.aiCategory}</span>
         </td>
         <td class="px-6 py-4">
           <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase ${badgeClass}">${a.status}</span>
@@ -911,10 +899,10 @@ function renderDashboardTable() {
         <td class="px-6 py-4 text-right">
           <div class="flex items-center justify-end gap-1.5">
             ${a.status !== 'Confirmed' && a.status !== 'Completed' && a.status !== 'Cancelled' ? `
-              <button onclick="updateAppointmentStatus('${a.id}', 'Confirmed')" class="px-2.5 py-1 bg-emerald-50 text-emerald-700 font-bold rounded-lg hover:bg-emerald-100 text-xs">Confirm</button>
+              <button onclick="updateAppointmentStatus('${a.id}', 'Confirmed')" class="px-3 py-1 bg-emerald-50 text-emerald-800 font-bold rounded-lg hover:bg-emerald-100 text-xs border border-emerald-200 transition">Confirm</button>
             ` : ''}
             ${a.status !== 'Cancelled' && a.status !== 'Completed' ? `
-              <button onclick="updateAppointmentStatus('${a.id}', 'Cancelled')" class="px-2.5 py-1 bg-rose-50 text-rose-700 font-bold rounded-lg hover:bg-rose-100 text-xs">Cancel</button>
+              <button onclick="updateAppointmentStatus('${a.id}', 'Cancelled')" class="px-3 py-1 bg-rose-50 text-rose-800 font-bold rounded-lg hover:bg-rose-100 text-xs border border-rose-200 transition">Cancel</button>
             ` : ''}
           </div>
         </td>
@@ -935,7 +923,7 @@ function updateAppointmentStatus(id, newStatus) {
   }
 }
 
-// Availability Shift Manager (Spec 2.4)
+// Availability Shift Manager
 function renderShiftManager() {
   const container = document.getElementById('shifts-list-container');
   const select = document.getElementById('shift-doctor-select');
@@ -950,15 +938,15 @@ function renderShiftManager() {
   if (document.getElementById('shift-doc-spec')) document.getElementById('shift-doc-spec').textContent = doc.specialty;
 
   if (shifts.length === 0) {
-    container.innerHTML = `<div class="p-6 text-center text-xs text-slate-400 bg-slate-50 rounded-2xl border border-dashed">No recurring shifts configured for this doctor.</div>`;
+    container.innerHTML = `<div class="p-6 text-center text-xs text-slate-400 bg-white rounded-2xl border border-dashed border-teal-200">No recurring shifts configured for this doctor.</div>`;
     return;
   }
 
   container.innerHTML = shifts.map(s => `
-    <div class="p-3.5 bg-white rounded-2xl border border-slate-200 flex items-center justify-between shadow-xs">
+    <div class="p-3.5 bg-white rounded-2xl border border-teal-100 flex items-center justify-between shadow-2xs">
       <div>
-        <strong class="text-xs text-slate-800">${s.dayOfWeek}</strong>
-        <span class="text-xs text-sky-600 font-bold block">${s.startTime} - ${s.endTime} (${s.slotDurationMinutes}m intervals)</span>
+        <strong class="text-xs text-slate-900">${s.dayOfWeek}</strong>
+        <span class="text-xs text-teal-600 font-bold block">${s.startTime} - ${s.endTime} (${s.slotDurationMinutes}m intervals)</span>
       </div>
       <button onclick="deleteShift('${s.id}')" class="text-rose-500 hover:text-rose-700 text-xs font-bold p-1">Delete</button>
     </div>
@@ -995,7 +983,7 @@ function deleteShift(shiftId) {
   renderShiftManager();
 }
 
-// n8n Webhook Monitor Tab
+// n8n Webhook Monitor
 function renderN8nMonitor() {
   const urlInput = document.getElementById('n8n-webhook-url');
   const payloadEl = document.getElementById('n8n-last-payload');
@@ -1035,7 +1023,7 @@ function testN8nWebhookPing() {
 
 
 // =========================================================================
-// GLOBAL INITIALIZER (Har HTML page ko automatically detect karta hai)
+// GLOBAL INITIALIZER
 // =========================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1048,13 +1036,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 2. Jo page open hoga, uska code chal jayega:
-  setupDoctorsPage();   // doctors.html ke liye
-  setupBookingPage();   // booking.html ke liye
-  setupDashboardPage(); // dashboard.html ke liye
+  // 2. Auto detect & initialize active page:
+  setupDoctorsPage();   // doctor.html
+  setupBookingPage();   // booking.html
+  setupDashboardPage(); // dashboard.html
 });
 
-// Global Window functions (Buttons ke onClick ke liye)
+// Global Window functions
 window.changeSpecialtyFilter = changeSpecialtyFilter;
 window.resetAllFilters = resetAllFilters;
 window.viewDoctorDetails = viewDoctorDetails;
